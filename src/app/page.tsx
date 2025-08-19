@@ -17,7 +17,6 @@ export default function Home() {
       <div className="absolute inset-0 z-10 flex items-center justify-center">
         <div className="max-w-2xl md:max-w-4xl mx-auto text-center text-black pb-[200px]">
           <h1 className="text-4xl md:text-6xl mb-6">Barter Builds</h1>
-          <p>Trade goods, get online</p>
           <p className="text-md md:text-xl mb-8 max-w-2xl mx-auto">
             Connecting small businesses who need websites with talented
             developers who want to trade their skills for goods and services. No

@@ -5,7 +5,6 @@ export default function BusinessesLayout({
 }) {
   return (
     <section>
-      <h1>Businesses</h1>
       {children}
     </section>
   );
