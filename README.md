@@ -18,23 +18,14 @@ Barter Build solves this by creating a marketplace for **skills-for-goods barter
 - **Tailwind CSS v3** – Utility-first styling  
 - **DaisyUI** – Prebuilt component library on top of Tailwind  
 
-### Backend
-- **Node.js** – Runtime for backend logic  
-- **Express.js** – For custom backend APIs  
-- **Next.js API Routes** – For serverless backend logic  
+### Backend & Database
+- **Supabase** – An open-source backend-as-a-service that provides a fully managed PostgreSQL database, authentication, and file storage
 
-### Infrastructure
-- **Docker** – Containerization for consistent deployment  
-- **Nginx** – Reverse proxy and load balancing  
-- **AWS** – Cloud services for hosting and storage 
+### Infrastructure & Deployment
+- **Vercel** – A cloud platform optimized for Next.js applications that handles zero-configuration deployment, serverless functions, and global content delivery
 
-### Database
-- **PostgreSQL** – For user accounts, listings, and barter deals  
-
-### CI/CD
-- **Jenkins** – Automated testing, builds, and deployments  
-
-### Automation / Scaling
-- **Docker Compose** – Local multi-service setup  
-- **Kubernetes (future)** – Orchestration for large-scale deployments  
+### Key Services
+- **Database** –  robust PostgreSQL database managed by Supabase for storing business listings, user accounts, and barter deal information
+- **Authentication** - Built-in, secure user authentication provided by Supabase
+- **File Storage** - Scalable cloud storage for business photos and other assets, managed by Supabase
 
