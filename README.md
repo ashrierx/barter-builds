@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Barter Builds
 
-## Getting Started
+Barter Builds is a platform that connects **small businesses** who need websites with **talented developers** who want to trade their skills for goods and services. No money required—just fair exchange.  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 Why Barter Builds
+Many small businesses cannot afford professional web development services or have no idea how to get started, while many developers seek opportunities to build their portfolios and gain real-world experience.  
+Barter Build solves this by creating a marketplace for **skills-for-goods barter**: small businesses get the websites they need, and developers get compensated with valuable goods or services in return.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Frontend
+- **Next.js 13+ (App Router)** – React-based framework for building fast, scalable apps  
+- **React** – Core library for UI development  
+- **Tailwind CSS v3** – Utility-first styling  
+- **DaisyUI** – Prebuilt component library on top of Tailwind  
 
-## Learn More
+### Backend
+- **Node.js** – Runtime for backend logic  
+- **Express.js** – For custom backend APIs  
+- **Next.js API Routes** – For serverless backend logic  
 
-To learn more about Next.js, take a look at the following resources:
+### Infrastructure
+- **Docker** – Containerization for consistent deployment  
+- **Nginx** – Reverse proxy and load balancing  
+- **AWS** – Cloud services for hosting and storage 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Database
+- **PostgreSQL** – For user accounts, listings, and barter deals  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### CI/CD
+- **Jenkins** – Automated testing, builds, and deployments  
 
-## Deploy on Vercel
+### Automation / Scaling
+- **Docker Compose** – Local multi-service setup  
+- **Kubernetes (future)** – Orchestration for large-scale deployments  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
