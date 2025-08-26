@@ -6,10 +6,7 @@
 import { MapPin, Calendar, ExternalLink, Mail, Phone, Globe } from 'lucide-react';
 import Image from 'next/image';
 import { NextPage } from 'next';
-import Link from 'next/link';
 
-// Using a hard-coded business object for now, as requested.
-// This will be replaced with data fetched from your backend.
 const businessData = {
   id: 1,
   name: "Maria's Bakery",
@@ -39,7 +36,7 @@ const businessData = {
   plannedPages: ["Home", "Menu/Products", "Online Ordering", "About Us", "Contact"],
 };
 
-// This is the function to get the correct urgency color, copied from your provided code.
+
 const getUrgencyStyle = (urgency: string) => {
   switch (urgency) {
     case 'High':
@@ -91,7 +88,6 @@ const BusinessPage: NextPage = () => {
             <div className="bg-white rounded-xl shadow-sm p-6 border">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">Business Photos</h2>
               <div className="grid grid-cols-2 gap-4">
-                {/* Placeholder images. Replace with real ones from your `public` folder. */}
                 <div className="relative aspect-video rounded-lg overflow-hidden">
                   <Image
                     src="/images/maria-bakery-1.jpg"

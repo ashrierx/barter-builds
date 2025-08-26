@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Loader2, X } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
@@ -7,42 +9,49 @@ type SignupModalProps = {
   onClose: () => void;
   switchToLogin: () => void;
 };
+
 export function SignupModal({
   isOpen,
   onClose,
   switchToLogin,
 }: SignupModalProps) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState<"business" | "developer" | "">("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "developer" as "business" | "developer",
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const { signup } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
     try {
-      const success = await signup({
-        name,
-        email,
-        password,
-        type: role as "business" | "developer",
-      });
-      if (success) {
-        onClose();
-        setName("");
-        setEmail("");
-        setRole("");
-        setPassword("");
-      } else {
-        setError("Sign up failed. Please try again.");
+      const { name, email, password, role } = formData;
+      const success = await signup(name, email, password, role);
+      console.log(formData);
+
+      if (!success) {
+        setError("Sign-up failed. Please check your details and try again.");
+        return;
       }
+
+      onClose();
+      alert("Account created successfully! You can now build your profile.");
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      console.error("Signup error:", err);
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +65,7 @@ export function SignupModal({
         className="absolute inset-0 bg-black bg-opacity-50"
         onClick={onClose}
       />
+
       <div className="relative bg-white rounded-lg shadow-lg w-full max-w-md p-6 z-10">
         <button
           onClick={onClose}
@@ -66,9 +76,9 @@ export function SignupModal({
 
         <h3 className="text-lg font-semibold mb-4">Create your account</h3>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSignup} className="space-y-4">
           {error && (
-            <div role="alert" className="alert">
+            <div role="alert" className="alert text-red-600">
               <span>{error}</span>
             </div>
           )}
@@ -79,8 +89,9 @@ export function SignupModal({
               <input
                 className="input w-full"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="Enter your full name"
                 required
                 disabled={isLoading}
@@ -94,8 +105,9 @@ export function SignupModal({
               <input
                 className="input w-full"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Enter your email"
                 required
                 disabled={isLoading}
@@ -109,8 +121,9 @@ export function SignupModal({
               <input
                 className="input w-full"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 placeholder="Enter a password"
                 required
                 disabled={isLoading}
@@ -119,19 +132,17 @@ export function SignupModal({
           </div>
 
           <div>
-            <span className="label block mb-1">Role</span>
+            <span className="label block mb-1">I am a...</span>
             <select
               className="input w-full"
-              value={role}
-              onChange={(e) =>
-                setRole(e.target.value as "business" | "developer")
-              }
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
               required
               disabled={isLoading}
             >
-              <option value="">Select a role</option>
-              <option value="business">Business</option>
               <option value="developer">Developer</option>
+              <option value="business">Business Owner</option>
             </select>
           </div>
 
@@ -142,14 +153,14 @@ export function SignupModal({
                 Creating account...
               </>
             ) : (
-              "Sign Up"
+              "Create Account"
             )}
           </button>
         </form>
 
         <div className="text-center text-sm text-muted-foreground mt-4">
           <p>
-            Already registered?{" "}
+            Already have an account?{" "}
             <button
               onClick={switchToLogin}
               className="text-blue-600 hover:underline"

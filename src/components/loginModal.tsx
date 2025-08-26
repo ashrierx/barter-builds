@@ -56,8 +56,6 @@ export function LoginModal({ isOpen, onClose, switchToSignup }: LoginModalProps)
       } else {
         setError("Invalid email or password. Please try again.");
       }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

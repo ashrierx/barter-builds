@@ -15,13 +15,13 @@ export default function Navigation() {
 
   const isActive = (path: string) => pathname === path;
 
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
+  // const getInitials = (name: string) => {
+  //   return name
+  //     .split(" ")
+  //     .map((n) => n[0])
+  //     .join("")
+  //     .toUpperCase();
+  // };
 
   const handleLogout = () => {
     logout();
@@ -140,9 +140,9 @@ export default function Navigation() {
                   >
                     Sign In
                   </button>
-                  <button className="btn">
+                  {/* <button className="btn">
                     <Link href="/apply">Get Started</Link>
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>

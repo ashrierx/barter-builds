@@ -3,139 +3,313 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-interface User {
+type User = {
   id: string;
   name: string;
   email: string;
-  type: "business" | "developer";
-  location?: string;
-  phone?: string;
-  businessName?: string;
-  businessType?: string;
-  offering?: string;
-  portfolio?: string;
-  github?: string;
-  skills?: string;
-  experience?: string;
-  availability?: string;
-  interestedIn?: string;
-}
-
-type SignupPayload = {
-  name: string;
-  email: string;
-  password: string;
-  type: "business" | "developer";
-  location?: string;
-  phone?: string;
-  businessName?: string;
-  businessType?: string;
-  offering?: string;
-  portfolio?: string;
-  github?: string;
-  skills?: string;
-  experience?: string;
-  availability?: string;
-  interestedIn?: string;
+  role: "business" | "developer";
+  created_at?: string;
 };
+
+type BusinessProfile = {
+  user_id: string;
+  business_name: string;
+  business_type: string;
+  location: string;
+  phone?: string;
+  website?: string;
+  description: string;
+  offering: string;
+  is_listed: boolean;
+  created_at?: string;
+};
+
+type DeveloperProfile = {
+  user_id: string;
+  location?: string;
+  portfolio?: string;
+  github?: string;
+  skills?: string;
+  experience?: string;
+  availability?: string;
+  interested_in?: string;
+  is_listed: boolean;
+  created_at?: string;
+};
+
+// export type SignupPayload = {
+//   name: string;
+//   email: string;
+//   password: string;
+//   role: "developer" | "business";
+//   location?: string;
+//   phone?: string;
+//   business_name?: string;
+//   business_type?: string;
+//   offering?: string;
+//   portfolio?: string;
+//   github?: string;
+//   skills?: string;
+//   experience?: string;
+//   availability?: string;
+//   interested_in?: string;
+// };
 
 interface AuthContextType {
   user: User | null;
+  businessProfile: BusinessProfile | null;
+  developerProfile: DeveloperProfile | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  logout: () => void;
-  updateProfile: (updates: Partial<User>) => void;
-  signup: (profileData: SignupPayload) => Promise<boolean>;
+  logout: () => Promise<void>;
+  signup: (
+    name: string,
+    email: string,
+    password: string,
+    role: "business" | "developer"
+  ) => Promise<boolean>;
+  createBusinessProfile: (
+    profile: Omit<BusinessProfile, "user_id" | "created_at">
+  ) => Promise<boolean>;
+  updateBusinessProfile: (
+    updates: Partial<BusinessProfile>
+  ) => Promise<boolean>;
+  createDeveloperProfile: (
+    profile: Omit<DeveloperProfile, "user_id" | "created_at">
+  ) => Promise<boolean>;
+  updateDeveloperProfile: (
+    updates: Partial<DeveloperProfile>
+  ) => Promise<boolean>;
 }
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [businessProfile, setBusinessProfile] =
+    useState<BusinessProfile | null>(null);
+  const [developerProfile, setDeveloperProfile] =
+    useState<DeveloperProfile | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   useEffect(() => {
     const { data: subscription } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (session && session.user) {
-          // fetch profile from 'users' table
-          const { data: profile } = await supabase
-            .from("users")
-            .select("*")
-            .eq("id", session.user.id)
-            .single();
-          setUser(profile);
-          setIsAuthenticated(true);
+          try {
+            // Fetch user profile
+            const { data: profile, error } = await supabase
+              .from("users")
+              .select("*")
+              .eq("id", session.user.id)
+              .single();
+            if (error) {
+              console.error("User profile fetch error:", error);
+              return;
+            }
+
+            if (profile) {
+              setUser(profile);
+              setIsAuthenticated(true);
+
+              // Fetch role-specific profile
+              if (profile.role === "business") {
+                const { data: businessData } = await supabase
+                  .from("business_profiles")
+                  .select("*")
+                  .eq("user_id", profile.id)
+                  .single();
+                setBusinessProfile(businessData);
+              } else if (profile.role === "developer") {
+                const { data: developerData } = await supabase
+                  .from("developer_profiles")
+                  .select("*")
+                  .eq("user_id", profile.id)
+                  .single();
+                setDeveloperProfile(developerData);
+              }
+            }
+          } catch (err) {
+            console.error("Profile fetch exception:", err);
+          }
         } else {
           setUser(null);
+          setBusinessProfile(null);
+          setDeveloperProfile(null);
           setIsAuthenticated(false);
         }
       }
     );
+
     return () => {
       subscription?.subscription.unsubscribe();
     };
   }, []);
-
   const login = async (email: string, password: string): Promise<boolean> => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error || !data.session || !data.user) return false;
-    // Fetch profile from your 'users' table
-    const { data: profile, error: profileError } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", data.user.id)
-      .single();
-    if (profileError || !profile) return false;
-    setUser(profile);
-    setIsAuthenticated(true);
+    if (error || !data.session || !data.user) {
+      console.error("Login error:", error);
+      return false;
+    }
+
     return true;
   };
 
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setBusinessProfile(null);
+    setDeveloperProfile(null);
     setIsAuthenticated(false);
   };
 
-  const signup = async (profileData: SignupPayload): Promise<boolean> => {
-    const { name, email, password, ...rest } = profileData;
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error || !data.user) return false;
-    const userProfile = { id: data.user.id, name, email, ...rest };
-    const { error: profileError } = await supabase
-      .from("users")
-      .insert([userProfile]);
-    if (profileError) return false;
-    setUser(userProfile);
-    setIsAuthenticated(true);
-    return true;
-  };
+  const signup = async (
+    name: string,
+    email: string,
+    password: string,
+    role: "business" | "developer"
+  ): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { role, name },
+        },
+      });
 
-  const updateProfile = async (updates: Partial<User>) => {
-    if (!user) return;
-    const { error } = await supabase
-      .from("users")
-      .update(updates)
-      .eq("id", user.id);
+      if (error || !data.user) {
+        console.error("Auth signup error:", error);
+        return false;
+      }
 
-    if (!error) {
-      setUser({ ...user, ...updates });
+      return true;
+    } catch (err) {
+      console.error("Signup exception:", err);
+      return false;
     }
   };
 
+  const createBusinessProfile = async (
+    profile: Omit<BusinessProfile, "user_id" | "created_at">
+  ): Promise<boolean> => {
+    if (!user) return false;
+    try {
+      const { data, error } = await supabase
+        .from("business_profiles")
+        .insert({
+          ...profile,
+          user_id: user.id,
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Business profile creation error:", error);
+        return false;
+      }
+
+      setBusinessProfile(data);
+      return true;
+    } catch (err) {
+      console.error("Business profile creation exception:", err);
+      return false;
+    }
+  };
+  const updateBusinessProfile = async (
+    updates: Partial<BusinessProfile>
+  ): Promise<boolean> => {
+    if (!user || !businessProfile) return false;
+    try {
+      const { data, error } = await supabase
+        .from("business_profiles")
+        .update(updates)
+        .eq("user_id", user.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Business profile update error:", error);
+        return false;
+      }
+
+      setBusinessProfile(data);
+      return true;
+    } catch (err) {
+      console.error("Business profile update exception:", err);
+      return false;
+    }
+  };
+  const createDeveloperProfile = async (
+    profile: Omit<DeveloperProfile, "user_id" | "created_at">
+  ): Promise<boolean> => {
+    if (!user) return false;
+    try {
+      const { data, error } = await supabase
+        .from("developer_profiles")
+        .insert({
+          ...profile,
+          user_id: user.id,
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Developer profile creation error:", error);
+        return false;
+      }
+
+      setDeveloperProfile(data);
+      return true;
+    } catch (err) {
+      console.error("Developer profile creation exception:", err);
+      return false;
+    }
+  };
+  const updateDeveloperProfile = async (
+    updates: Partial<DeveloperProfile>
+  ): Promise<boolean> => {
+    if (!user || !developerProfile) return false;
+    try {
+      const { data, error } = await supabase
+        .from("developer_profiles")
+        .update(updates)
+        .eq("user_id", user.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Developer profile update error:", error);
+        return false;
+      }
+
+      setDeveloperProfile(data);
+      return true;
+    } catch (err) {
+      console.error("Developer profile update exception:", err);
+      return false;
+    }
+  };
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, logout, updateProfile, signup }}
+      value={{
+        user,
+        businessProfile,
+        developerProfile,
+        isAuthenticated,
+        login,
+        logout,
+        signup,
+        createBusinessProfile,
+        updateBusinessProfile,
+        createDeveloperProfile,
+        updateDeveloperProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
-
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
