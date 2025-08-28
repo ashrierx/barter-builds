@@ -75,22 +75,58 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    console.log("Setting up auth state change listener...");
+
+    // Test if we can access the users table
+    const testTableAccess = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("id")
+          .limit(1);
+        console.log("Table access test:", { data, error });
+      } catch (err) {
+        console.error("Table access test failed:", err);
+      }
+    };
+
+    testTableAccess();
+
     const { data: subscription } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth state change event:", event, "Session:", session);
         if (session && session.user) {
           try {
+            console.log("User authenticated, fetching profile...");
+            console.log("User ID:", session.user.id);
+
             // Fetch user profile
             const { data: profile, error } = await supabase
               .from("users")
               .select("*")
               .eq("id", session.user.id)
               .single();
+
+            console.log("Profile query result:", { profile, error });
+
             if (error) {
               console.error("User profile fetch error:", error);
+              console.error(
+                "Error details:",
+                error.message,
+                error.details,
+                error.hint
+              );
+              // Even if profile fetch fails, set authentication state
+              console.log(
+                "Setting authentication state despite profile fetch failure"
+              );
+              setIsAuthenticated(true);
               return;
             }
 
             if (profile) {
+              console.log("Profile fetched successfully:", profile);
               setUser(profile);
               setIsAuthenticated(true);
 
@@ -110,11 +146,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                   .single();
                 setDeveloperProfile(developerData);
               }
+            } else {
+              console.log("No profile found, but user is authenticated");
+              setIsAuthenticated(true);
             }
           } catch (err) {
             console.error("Profile fetch exception:", err);
+            // Even if there's an exception, set authentication state
+            console.log("Setting authentication state despite exception");
+            setIsAuthenticated(true);
           }
         } else {
+          console.log("User not authenticated, clearing state");
           setUser(null);
           setBusinessProfile(null);
           setDeveloperProfile(null);
@@ -130,6 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
+      console.log("Starting login process...");
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),
@@ -144,6 +188,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.error("No session or user returned");
         return false;
       }
+
+      console.log("Login successful, session:", data.session);
+      console.log("Login successful, user:", data.user);
+
+      // The auth state change listener will handle setting the user and isAuthenticated
+      // But we can also set it here to ensure immediate response
+      setIsAuthenticated(true);
 
       return true;
     } catch (err) {

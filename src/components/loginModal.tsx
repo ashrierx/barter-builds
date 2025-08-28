@@ -35,7 +35,11 @@ type LoginModalProps = {
   onClose: () => void;
   switchToSignup: () => void;
 };
-export function LoginModal({ isOpen, onClose, switchToSignup }: LoginModalProps) {
+export function LoginModal({
+  isOpen,
+  onClose,
+  switchToSignup,
+}: LoginModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -44,26 +48,30 @@ export function LoginModal({ isOpen, onClose, switchToSignup }: LoginModalProps)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted, setting loading state...");
     setIsLoading(true);
     setError("");
-  
+
     try {
+      console.log("Calling login function...");
       const success = await login(email, password);
-      console.log("Login success:", success); // Add this debug line
+      console.log("Login result:", success);
       if (success) {
+        console.log("Login successful, resetting form and closing modal...");
         // Reset form state immediately
         setEmail("");
         setPassword("");
         setIsLoading(false); // Add this line
         onClose(); // Close modal immediately after successful login
       } else {
+        console.log("Login failed, showing error...");
         setError("Invalid email or password. Please try again.");
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     } catch (error) {
-      console.error("Login error:", error); 
+      console.error("Login error:", error);
       setError("An error occurred. Please try again.");
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -79,11 +87,14 @@ export function LoginModal({ isOpen, onClose, switchToSignup }: LoginModalProps)
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+          disabled={isLoading}
         >
           <X className="w-5 h-5" />
         </button>
 
-        <h3 className="text-lg font-semibold mb-4">Welcome back to Barter Builds</h3>
+        <h3 className="text-lg font-semibold mb-4">
+          Welcome back to Barter Builds
+        </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
