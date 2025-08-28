@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
-import { createClient } from "@supabase/supabase-js";
 
 type User = {
   id: string;
@@ -66,7 +65,7 @@ interface AuthContextType {
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [businessProfile, setBusinessProfile] =
     useState<BusinessProfile | null>(null);
@@ -369,10 +368,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
-export function useAuth() {
+function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
+
+export { AuthProvider, useAuth };

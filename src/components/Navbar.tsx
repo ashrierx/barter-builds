@@ -98,30 +98,22 @@ export default function Navigation() {
               </Link>
             </div>
 
-            <div className="flex items-center gap-4 relative dropdown">
+            <div className="flex items-center gap-4">
               {isAuthenticated && user ? (
-                <details className="dropdown">
-                  <summary>
-                    <button
-                      className="rounded-full h-8 w-8 flex items-center justify-center bg-[#412ad5]"
-                    >
-                      <div className="avatar placeholder">
-                        {/* <div className="bg-neutral text-neutral-content rounded-full w-8 h-8 flex items-center justify-center"> */}
-                          <span
-                            className="text-xs font-bold text-white"
-                            style={{ width: "100%", textAlign: "center" }}
-                          >
-                            {getInitials(user.name)}
-                          </span>
-                        {/* </div> */}
-                      </div>
-                    </button>
-                  </summary>
-                  <ul
-                    className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm absolute right-0 mt-2"
-                    style={{ left: "auto", right: 0, minWidth: "13rem" }}
+                <div className="dropdown dropdown-end">
+                  <button
+                    tabIndex={0}
+                    className="rounded-full h-8 w-8 flex items-center justify-center bg-[#412ad5] hover:bg-[#3521b3] transition-colors"
                   >
-                    <div className="flex items-center justify-start gap-2 p-2">
+                    <span className="text-xs font-bold text-white">
+                      {getInitials(user.name)}
+                    </span>
+                  </button>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow-lg"
+                  >
+                    <div className="flex items-center justify-start gap-2 p-2 border-b border-gray-200 mb-2">
                       <div className="avatar">
                         <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
                       </div>
@@ -149,7 +141,7 @@ export default function Navigation() {
                       Log out
                     </li>
                   </ul>
-                </details>
+                </div>
               ) : (
                 <div className="hidden md:flex items-center gap-2">
                   <button
