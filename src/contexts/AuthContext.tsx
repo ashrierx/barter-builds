@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
 type User = {
   id: string;
@@ -37,24 +38,6 @@ type DeveloperProfile = {
   created_at?: string;
 };
 
-// export type SignupPayload = {
-//   name: string;
-//   email: string;
-//   password: string;
-//   role: "developer" | "business";
-//   location?: string;
-//   phone?: string;
-//   business_name?: string;
-//   business_type?: string;
-//   offering?: string;
-//   portfolio?: string;
-//   github?: string;
-//   skills?: string;
-//   experience?: string;
-//   availability?: string;
-//   interested_in?: string;
-// };
-
 interface AuthContextType {
   user: User | null;
   businessProfile: BusinessProfile | null;
@@ -82,6 +65,7 @@ interface AuthContextType {
   ) => Promise<boolean>;
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [businessProfile, setBusinessProfile] =
@@ -89,6 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [developerProfile, setDeveloperProfile] =
     useState<DeveloperProfile | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
     const { data: subscription } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -142,25 +127,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       subscription?.subscription.unsubscribe();
     };
   }, []);
+
   const login = async (email: string, password: string): Promise<boolean> => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error || !data.session || !data.user) {
-      console.error("Login error:", error);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password.trim(),
+      });
+
+      if (error) {
+        console.error("Login error:", error);
+        return false;
+      }
+
+      if (!data.session || !data.user) {
+        console.error("No session or user returned");
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error("Login exception:", err);
       return false;
     }
-
-    return true;
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setBusinessProfile(null);
-    setDeveloperProfile(null);
-    setIsAuthenticated(false);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Logout error:", error);
+      }
+      setUser(null);
+      setBusinessProfile(null);
+      setDeveloperProfile(null);
+      setIsAuthenticated(false);
+    } catch (err) {
+      console.error("Logout exception:", err);
+    }
   };
 
   const signup = async (
@@ -216,6 +220,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
   };
+
   const updateBusinessProfile = async (
     updates: Partial<BusinessProfile>
   ): Promise<boolean> => {
@@ -240,6 +245,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
   };
+
   const createDeveloperProfile = async (
     profile: Omit<DeveloperProfile, "user_id" | "created_at">
   ): Promise<boolean> => {
@@ -266,6 +272,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
   };
+
   const updateDeveloperProfile = async (
     updates: Partial<DeveloperProfile>
   ): Promise<boolean> => {
@@ -290,6 +297,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
   };
+
   return (
     <AuthContext.Provider
       value={{

@@ -115,7 +115,7 @@ const BusinessPage: NextPage = () => {
               <div className="space-y-4">
                 {/* Offering in Exchange */}
                 <div>
-                  <h3 className="text-lg font-medium mb-1 text-gray-800">What They're Offering:</h3>
+                  <h3 className="text-lg font-medium mb-1 text-gray-800">What They Are Offering:</h3>
                   <p className="bg-gray-100 p-4 rounded-lg text-gray-700">{businessData.offering}</p>
                 </div>
                 

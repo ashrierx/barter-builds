@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { User, LogOut, Settings } from "lucide-react";
@@ -15,18 +15,24 @@ export default function Navigation() {
 
   const isActive = (path: string) => pathname === path;
 
-  // const getInitials = (name: string) => {
-  //   return name
-  //     .split(" ")
-  //     .map((n) => n[0])
-  //     .join("")
-  //     .toUpperCase();
-  // };
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     router.push("/");
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setShowLoginModal(false);
+    }
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -97,8 +103,12 @@ export default function Navigation() {
                 <details className="dropdown">
                   <summary>
                     <button className="btn relative h-8 w-8 rounded-full">
-                      <div className="avatar">
-                        <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
+                      <div className="avatar placeholder">
+                        <div className="bg-neutral text-neutral-content rounded-full w-8 h-8 flex items-center justify-center">
+                          <span className="text-xs">
+                            {getInitials(user.name)}
+                          </span>
+                        </div>
                       </div>
                     </button>
                   </summary>

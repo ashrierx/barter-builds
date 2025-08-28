@@ -1,7 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import { Users, Code, CheckCircle } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useRouter } from "next/navigation";
+
 export default function Apply() {
   const {
     user,
@@ -313,7 +316,7 @@ export default function Apply() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    What You're Offering in Exchange *
+                    What You Are Offering in Exchange *
                   </label>
                   <textarea
                     rows={3}

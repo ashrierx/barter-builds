@@ -92,13 +92,13 @@ export default function Businesses() {
         <h1 className="text-5xl mb-6 font-bold">Businesses Seeking Help</h1>
         <p className="text-xl text-gray-500 max-w-3xl mx-auto">
           Browse local businesses that need websites and discover what valuable
-          goods and services they're offering in exchange.
+          goods and services they are offering in exchange.
         </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {businesses.map((business) => (
-          <Link href={`/businesses/${business.id}`}>
+          <Link key={business.id} href={`/businesses/${business.id}`}>
             <div
               key={business.id}
               className="rounded-2xl border bg-white shadow-sm p-6 flex flex-col justify-between"
@@ -163,7 +163,7 @@ export default function Businesses() {
 
       <div className="text-center mt-12">
         <p className="text-gray-500 mb-4">
-          Don't see what you're looking for? New businesses join every day.
+          Don&apos;t see what you are looking for? New businesses join every day.
         </p>
         <button className="px-6 py-2 border rounded-xl hover:bg-gray-50 transition">
           Load More Businesses

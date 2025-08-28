@@ -33,7 +33,7 @@ export default function Contact() {
         <h1 className="text-5xl mb-6">Contact Us</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Have questions about Barter Builds? Need help with your application?
-          We're here to help you navigate the world of skill-based trading.
+          We are here to help you navigate the world of skill-based trading.
         </p>
       </div>
 
@@ -113,7 +113,7 @@ export default function Contact() {
         <div className="lg:col-span-2 border rounded-lg p-6">
           <h2 className="font-semibold">Send us a Message</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            Fill out the form below and we'll get back to you as soon as
+            Fill out the form below and we will get back to you as soon as
             possible.
           </p>
           <form onSubmit={handleSubmit} className="space-y-6">

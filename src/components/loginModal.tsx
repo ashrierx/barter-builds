@@ -46,18 +46,24 @@ export function LoginModal({ isOpen, onClose, switchToSignup }: LoginModalProps)
     e.preventDefault();
     setIsLoading(true);
     setError("");
-
+  
     try {
       const success = await login(email, password);
+      console.log("Login success:", success); // Add this debug line
       if (success) {
-        onClose();
+        // Reset form state immediately
         setEmail("");
         setPassword("");
+        setIsLoading(false); // Add this line
+        onClose(); // Close modal immediately after successful login
       } else {
         setError("Invalid email or password. Please try again.");
+        setIsLoading(false); 
       }
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error("Login error:", error); 
+      setError("An error occurred. Please try again.");
+      setIsLoading(false); 
     }
   };
 
