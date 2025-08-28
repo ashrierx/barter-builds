@@ -98,21 +98,29 @@ export default function Navigation() {
               </Link>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 relative dropdown">
               {isAuthenticated && user ? (
                 <details className="dropdown">
                   <summary>
-                    <button className="btn relative h-8 w-8 rounded-full">
+                    <button
+                      className="rounded-full h-8 w-8 flex items-center justify-center bg-[#412ad5]"
+                    >
                       <div className="avatar placeholder">
-                        <div className="bg-neutral text-neutral-content rounded-full w-8 h-8 flex items-center justify-center">
-                          <span className="text-xs">
+                        {/* <div className="bg-neutral text-neutral-content rounded-full w-8 h-8 flex items-center justify-center"> */}
+                          <span
+                            className="text-xs font-bold text-white"
+                            style={{ width: "100%", textAlign: "center" }}
+                          >
                             {getInitials(user.name)}
                           </span>
-                        </div>
+                        {/* </div> */}
                       </div>
                     </button>
                   </summary>
-                  <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                  <ul
+                    className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm absolute right-0 mt-2"
+                    style={{ left: "auto", right: 0, minWidth: "13rem" }}
+                  >
                     <div className="flex items-center justify-start gap-2 p-2">
                       <div className="avatar">
                         <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
