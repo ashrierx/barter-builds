@@ -74,18 +74,6 @@ export default function Navigation() {
               >
                 Businesses
               </Link>
-              {!isAuthenticated && (
-                <Link
-                  href="/apply"
-                  className={`transition-colors ${
-                    isActive("/apply")
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-primary"
-                  }`}
-                >
-                  Apply
-                </Link>
-              )}
               <Link
                 href="/contact"
                 className={`transition-colors ${

@@ -35,6 +35,7 @@ type LoginModalProps = {
   onClose: () => void;
   switchToSignup: () => void;
 };
+
 export function LoginModal({
   isOpen,
   onClose,
@@ -48,28 +49,22 @@ export function LoginModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted, setting loading state...");
     setIsLoading(true);
     setError("");
 
     try {
-      console.log("Calling login function...");
       const success = await login(email, password);
-      console.log("Login result:", success);
       if (success) {
         console.log("Login successful, resetting form and closing modal...");
-        // Reset form state immediately
         setEmail("");
         setPassword("");
-        setIsLoading(false); // Add this line
-        onClose(); // Close modal immediately after successful login
+        setIsLoading(false); 
+        onClose(); 
       } else {
-        console.log("Login failed, showing error...");
         setError("Invalid email or password. Please try again.");
         setIsLoading(false);
       }
     } catch (error) {
-      console.error("Login error:", error);
       setError("An error occurred. Please try again.");
       setIsLoading(false);
     }

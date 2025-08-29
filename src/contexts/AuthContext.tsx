@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { useRouter } from "next/router";
+import { data } from "react-router-dom";
 
 type User = {
   id: string;
@@ -37,7 +39,7 @@ type DeveloperProfile = {
   created_at?: string;
 };
 
-interface AuthContextType {
+type AuthContextType = {
   user: User | null;
   businessProfile: BusinessProfile | null;
   developerProfile: DeveloperProfile | null;
@@ -62,7 +64,7 @@ interface AuthContextType {
   updateDeveloperProfile: (
     updates: Partial<DeveloperProfile>
   ) => Promise<boolean>;
-}
+};
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -76,7 +78,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log("Setting up auth state change listener...");
 
-    // Test if we can access the users table
     const testTableAccess = async () => {
       try {
         const { data, error } = await supabase
@@ -203,18 +204,10 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error("Logout error:", error);
-      }
-      setUser(null);
-      setBusinessProfile(null);
-      setDeveloperProfile(null);
-      setIsAuthenticated(false);
-    } catch (err) {
-      console.error("Logout exception:", err);
-    }
+    setUser(null);
+    setBusinessProfile(null);
+    setDeveloperProfile(null);
+    await location.reload();
   };
 
   const signup = async (
@@ -244,109 +237,77 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const createBusinessProfile = async (
+  async function createBusinessProfile(
     profile: Omit<BusinessProfile, "user_id" | "created_at">
-  ): Promise<boolean> => {
-    if (!user) return false;
+  ): Promise<boolean> {
     try {
-      const { data, error } = await supabase
-        .from("business_profiles")
-        .insert({
-          ...profile,
-          user_id: user.id,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error("Business profile creation error:", error);
-        return false;
-      }
-
-      setBusinessProfile(data);
+      const res = await fetch("/api/business-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const result = await res.json();
+      setBusinessProfile(result);
       return true;
-    } catch (err) {
-      console.error("Business profile creation exception:", err);
+    } catch {
       return false;
     }
-  };
+  }
 
-  const updateBusinessProfile = async (
+  async function updateBusinessProfile(
     updates: Partial<BusinessProfile>
-  ): Promise<boolean> => {
-    if (!user || !businessProfile) return false;
+  ): Promise<boolean> {
     try {
-      const { data, error } = await supabase
-        .from("business_profiles")
-        .update(updates)
-        .eq("user_id", user.id)
-        .select()
-        .single();
-
-      if (error) {
-        console.error("Business profile update error:", error);
-        return false;
-      }
-
-      setBusinessProfile(data);
+      const res = await fetch("/api/business-profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const result = await res.json();
+      setBusinessProfile(result);
       return true;
-    } catch (err) {
-      console.error("Business profile update exception:", err);
+    } catch {
       return false;
     }
-  };
+  }
 
-  const createDeveloperProfile = async (
+  async function createDeveloperProfile(
     profile: Omit<DeveloperProfile, "user_id" | "created_at">
-  ): Promise<boolean> => {
-    if (!user) return false;
+  ): Promise<boolean> {
     try {
-      const { data, error } = await supabase
-        .from("developer_profiles")
-        .insert({
-          ...profile,
-          user_id: user.id,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error("Developer profile creation error:", error);
-        return false;
-      }
-
-      setDeveloperProfile(data);
+      const res = await fetch("/api/developer-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const result = await res.json();
+      setDeveloperProfile(result);
       return true;
-    } catch (err) {
-      console.error("Developer profile creation exception:", err);
+    } catch {
       return false;
     }
-  };
+  }
 
-  const updateDeveloperProfile = async (
-    updates: Partial<DeveloperProfile>
-  ): Promise<boolean> => {
-    if (!user || !developerProfile) return false;
+  async function updateDeveloperProfile(
+    data: DeveloperProfile
+  ): Promise<boolean> {
     try {
-      const { data, error } = await supabase
-        .from("developer_profiles")
-        .update(updates)
-        .eq("user_id", user.id)
-        .select()
-        .single();
-
-      if (error) {
-        console.error("Developer profile update error:", error);
-        return false;
-      }
-
-      setDeveloperProfile(data);
+      const res = await fetch("/api/developer-profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const result = await res.json();
+      setDeveloperProfile(result);
       return true;
-    } catch (err) {
-      console.error("Developer profile update exception:", err);
+    } catch {
       return false;
     }
-  };
+  }
 
   return (
     <AuthContext.Provider
@@ -361,13 +322,28 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         createBusinessProfile,
         updateBusinessProfile,
         createDeveloperProfile,
-        updateDeveloperProfile,
+        updateDeveloperProfile: async (updates: Partial<DeveloperProfile>) => {
+          try {
+            const res = await fetch("/api/developer-profile", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(updates),
+            });
+            if (!res.ok) throw new Error("Failed");
+            const result = await res.json();
+            setDeveloperProfile(result);
+            return true;
+          } catch {
+            return false;
+          }
+        },
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
+
 function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
