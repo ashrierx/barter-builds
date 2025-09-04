@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { User, LogOut, Settings } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
-import { AuthModal } from "./loginModal";
+import { useAuth } from "@/lib/AuthContext";
+import { AuthModal } from "@/components/auth/LoginModal";
 
 export default function Navigation() {
   const pathname = usePathname();

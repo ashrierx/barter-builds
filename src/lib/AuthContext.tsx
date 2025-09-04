@@ -2,8 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
-import { useRouter } from "next/router";
-import { data } from "react-router-dom";
+import { redirect } from "next/navigation";
 
 type User = {
   id: string;
@@ -79,30 +78,10 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    console.log("Setting up auth state change listener...");
-
-    const testTableAccess = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("id")
-          .limit(1);
-        console.log("Table access test:", { data, error });
-      } catch (err) {
-        console.error("Table access test failed:", err);
-      }
-    };
-
-    testTableAccess();
-
     const { data: subscription } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log("Auth state change event:", event, "Session:", session);
         if (session && session.user) {
           try {
-            console.log("User authenticated, fetching profile...");
-            console.log("User ID:", session.user.id);
-
             // Fetch user profile
             const { data: profile, error } = await supabase
               .from("users")
@@ -114,15 +93,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
             if (error) {
               console.error("User profile fetch error:", error);
-              console.error(
-                "Error details:",
-                error.message,
-                error.details,
-                error.hint
-              );
-              console.log(
-                "Setting authentication state despite profile fetch failure"
-              );
               setIsAuthenticated(true);
               return;
             }
@@ -154,8 +124,15 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             }
           } catch (err) {
             console.error("Profile fetch exception:", err);
-            console.log("Setting authentication state despite exception");
             setIsAuthenticated(true);
+          }
+
+          // Only redirect on SIGNED_IN event and if we're not already on dashboard
+          if (
+            event === "SIGNED_IN" &&
+            window.location.pathname !== "/dashboard"
+          ) {
+            redirect("/dashboard");
           }
         } else {
           console.log("User not authenticated, clearing state");
@@ -174,7 +151,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      console.log("Starting login process...");
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),
@@ -189,14 +165,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         console.error("No session or user returned");
         return false;
       }
-
-      console.log("Login successful, session:", data.session);
-      console.log("Login successful, user:", data.user);
-
-      // The auth state change listener will handle setting the user and isAuthenticated
-      // But we can also set it here to ensure immediate response
-      setIsAuthenticated(true);
-
       return true;
     } catch (err) {
       console.error("Login exception:", err);
@@ -204,33 +172,41 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const logout = async () => {
-    setUser(null);
-    setBusinessProfile(null);
-    setDeveloperProfile(null);
-    await location.reload();
+  const logout = async (): Promise<void> => {
+    try {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error("Logout error:", error);
+        return;
+      }
+      setUser(null);
+      setBusinessProfile(null);
+      setDeveloperProfile(null);
+      setIsAuthenticated(false);
+    } catch (err) {
+      console.error("Logout exception:", err);
+    }
   };
 
-  const signup = async (
-    name: string,
-    email: string,
-    password: string,
-    role: "business" | "developer"
-  ): Promise<boolean> => {
+  const signup = async (email: string, password: string): Promise<boolean> => {
     try {
       const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { role, name },
-        },
+        email: email.trim(),
+        password: password.trim(),
       });
 
-      if (error || !data.user) {
-        console.error("Auth signup error:", error);
+      if (error) {
+        console.error("Signup error:", error);
         return false;
       }
 
+      if (!data.user) {
+        console.error("No user returned after signup");
+        return false;
+      }
+
+      setIsAuthenticated(true);
       return true;
     } catch (err) {
       console.error("Signup exception:", err);

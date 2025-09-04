@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { LogOut, UserCircle } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, X } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
-import { SignupModal } from "./signupModal";
+import { useAuth } from "@/lib/AuthContext";
+import { SignupModal } from "./SignupModal";
+import { useRouter } from "next/navigation";
 
 type AuthModalProps = {
   isOpen: boolean;
@@ -47,6 +48,13 @@ export function LoginModal({
   const [error, setError] = useState("");
   const { login } = useAuth();
 
+  useEffect(() => {
+    if (!isOpen) {
+      setIsLoading(false);
+      setError("");
+    }
+  }, [isOpen]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -55,11 +63,14 @@ export function LoginModal({
     try {
       const success = await login(email, password);
       if (success) {
-        console.log("Login successful, resetting form and closing modal...");
+        console.log("Login successful, resetting form...");
         setEmail("");
         setPassword("");
-        setIsLoading(false); 
-        onClose(); 
+        // Reset loading state BEFORE closing modal
+        setIsLoading(false);
+        onClose();
+        // Remove the manual redirect - let AuthContext handle it
+        // router.push("/dashboard"); // Remove this line
       } else {
         setError("Invalid email or password. Please try again.");
         setIsLoading(false);

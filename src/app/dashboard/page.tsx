@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/lib/AuthContext";
 import { Pencil, Trash2, PlusCircle } from "lucide-react";
 // import {
 //   Dialog,
