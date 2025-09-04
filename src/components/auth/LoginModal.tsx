@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState, useTransition } from "react";
 import { Loader2, X } from "lucide-react";
-import { useAuth } from "@/lib/AuthContext";
 import { SignupModal } from "./SignupModal";
-import { useRouter } from "next/navigation";
+import { loginAction, type AuthResult } from "@/app/auth/actions";
 
 type AuthModalProps = {
   isOpen: boolean;
@@ -34,7 +33,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  switchToSignup: () => void;
+  switchToSignup?: () => void;
 };
 
 export function LoginModal({
@@ -42,44 +41,26 @@ export function LoginModal({
   onClose,
   switchToSignup,
 }: LoginModalProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { login } = useAuth();
+  const [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
-    if (!isOpen) {
-      setIsLoading(false);
-      setError("");
-    }
-  }, [isOpen]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  async function handleSubmit(formData: FormData) {
     setError("");
 
-    try {
-      const success = await login(email, password);
-      if (success) {
-        console.log("Login successful, resetting form...");
-        setEmail("");
-        setPassword("");
-        // Reset loading state BEFORE closing modal
-        setIsLoading(false);
-        onClose();
-        // Remove the manual redirect - let AuthContext handle it
-        // router.push("/dashboard"); // Remove this line
-      } else {
-        setError("Invalid email or password. Please try again.");
-        setIsLoading(false);
+    startTransition(async () => {
+      try {
+        const result = await loginAction(formData);
+
+        if (!result.success) {
+          setError(result.error || "Login failed");
+        }
+        // If successful, the server action will handle the redirect
+      } catch (error) {
+        console.error("Login error:", error);
+        setError("An unexpected error occurred");
       }
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-      setIsLoading(false);
-    }
-  };
+    });
+  }
 
   if (!isOpen) return null;
 
@@ -93,7 +74,7 @@ export function LoginModal({
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-          disabled={isLoading}
+          disabled={isPending}
         >
           <X className="w-5 h-5" />
         </button>
@@ -102,47 +83,54 @@ export function LoginModal({
           Welcome back to Barter Builds
         </h3>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form action={handleSubmit} className="space-y-4">
           {error && (
-            <div role="alert" className="alert">
+            <div
+              role="alert"
+              className="alert alert-error bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"
+            >
               <span>{error}</span>
             </div>
           )}
 
           <div className="space-y-2">
             <label className="block">
-              <span className="label">Email</span>
+              <span className="text-sm font-medium text-gray-700">Email</span>
               <input
-                className="input w-full"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 placeholder="Enter your email"
                 required
-                disabled={isLoading}
+                disabled={isPending}
               />
             </label>
           </div>
 
           <div className="space-y-2">
             <label className="block">
-              <span className="label">Password</span>
+              <span className="text-sm font-medium text-gray-700">
+                Password
+              </span>
               <input
-                className="input w-full"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
                 placeholder="Enter your password"
                 required
-                disabled={isLoading}
+                disabled={isPending}
               />
             </label>
           </div>
 
-          <button type="submit" className="btn w-full" disabled={isLoading}>
-            {isLoading ? (
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isPending}
+          >
+            {isPending ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 mr-2 animate-spin inline" />
                 Signing in...
               </>
             ) : (
@@ -151,17 +139,20 @@ export function LoginModal({
           </button>
         </form>
 
-        <div className="text-center text-sm text-muted-foreground mt-4">
-          <p>
-            New here?{" "}
-            <button
-              onClick={switchToSignup}
-              className="text-blue-600 hover:underline"
-            >
-              Create an account
-            </button>
-          </p>
-        </div>
+        {switchToSignup && (
+          <div className="text-center text-sm text-gray-600 mt-4">
+            <p>
+              New here?{" "}
+              <button
+                onClick={switchToSignup}
+                className="text-blue-600 hover:underline"
+                disabled={isPending}
+              >
+                Create an account
+              </button>
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
