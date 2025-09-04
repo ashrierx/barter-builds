@@ -22,8 +22,9 @@ type BusinessProfile = {
   website?: string;
   description: string;
   offering: string;
-  is_listed: boolean;
+  is_listed?: boolean;
   created_at?: string;
+  updated_at?: string;
 };
 
 type DeveloperProfile = {
@@ -35,8 +36,9 @@ type DeveloperProfile = {
   experience?: string;
   availability?: string;
   interested_in?: string;
-  is_listed: boolean;
+  is_listed?: boolean;
   created_at?: string;
+  updated_at?: string;
 };
 
 type AuthContextType = {
@@ -64,6 +66,7 @@ type AuthContextType = {
   updateDeveloperProfile: (
     updates: Partial<DeveloperProfile>
   ) => Promise<boolean>;
+  fetchUserProfiles: () => Promise<void>;
 };
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -117,7 +120,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
                 error.details,
                 error.hint
               );
-              // Even if profile fetch fails, set authentication state
               console.log(
                 "Setting authentication state despite profile fetch failure"
               );
@@ -152,7 +154,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             }
           } catch (err) {
             console.error("Profile fetch exception:", err);
-            // Even if there's an exception, set authentication state
             console.log("Setting authentication state despite exception");
             setIsAuthenticated(true);
           }
@@ -238,74 +239,155 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   async function createBusinessProfile(
-    profile: Omit<BusinessProfile, "user_id" | "created_at">
+    profile: Omit<BusinessProfile, "user_id" | "created_at" | "updated_at">
   ): Promise<boolean> {
     try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        console.error("No active session");
+        return false;
+      }
+
       const res = await fetch("/api/business-profile", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify(profile),
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) throw new Error("Failed to create business profile");
       const result = await res.json();
       setBusinessProfile(result);
       return true;
-    } catch {
+    } catch (error) {
+      console.error("Error creating business profile:", error);
       return false;
     }
   }
 
   async function updateBusinessProfile(
-    updates: Partial<BusinessProfile>
+    updates: Partial<Omit<BusinessProfile, "user_id" | "created_at">>
   ): Promise<boolean> {
     try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        console.error("No active session");
+        return false;
+      }
+
       const res = await fetch("/api/business-profile", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify(updates),
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) throw new Error("Failed to update business profile");
       const result = await res.json();
       setBusinessProfile(result);
       return true;
-    } catch {
+    } catch (error) {
+      console.error("Error updating business profile:", error);
       return false;
     }
   }
 
   async function createDeveloperProfile(
-    profile: Omit<DeveloperProfile, "user_id" | "created_at">
+    profile: Omit<DeveloperProfile, "user_id" | "created_at" | "updated_at">
   ): Promise<boolean> {
     try {
       const res = await fetch("/api/developer-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(profile), // Fixed: was using 'data' instead of 'profile'
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) throw new Error("Failed to create developer profile");
       const result = await res.json();
       setDeveloperProfile(result);
       return true;
-    } catch {
+    } catch (error) {
+      console.error("Error creating developer profile:", error);
       return false;
     }
   }
 
   async function updateDeveloperProfile(
-    data: DeveloperProfile
+    updates: Partial<Omit<DeveloperProfile, "user_id" | "created_at">>
   ): Promise<boolean> {
     try {
       const res = await fetch("/api/developer-profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(updates),
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) throw new Error("Failed to update developer profile");
       const result = await res.json();
       setDeveloperProfile(result);
       return true;
-    } catch {
+    } catch (error) {
+      console.error("Error updating developer profile:", error);
       return false;
+    }
+  }
+
+  async function deleteBusinessProfile(): Promise<boolean> {
+    try {
+      const res = await fetch("/api/business-profile", {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete business profile");
+      setBusinessProfile(null);
+      return true;
+    } catch (error) {
+      console.error("Error deleting business profile:", error);
+      return false;
+    }
+  }
+
+  async function deleteDeveloperProfile(): Promise<boolean> {
+    try {
+      const res = await fetch("/api/developer-profile", {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete developer profile");
+      setDeveloperProfile(null);
+      return true;
+    } catch (error) {
+      console.error("Error deleting developer profile:", error);
+      return false;
+    }
+  }
+
+  // Fetch user's own profiles (for dashboard)
+  async function fetchUserProfiles(): Promise<void> {
+    if (!user) return;
+
+    try {
+      // Fetch business profile if user is a business
+      if (user.role === "business") {
+        const businessRes = await fetch("/api/business-profile");
+        if (businessRes.ok) {
+          const businessData = await businessRes.json();
+          setBusinessProfile(businessData);
+        }
+      }
+
+      // Fetch developer profile if user is a developer
+      if (user.role === "developer") {
+        const developerRes = await fetch("/api/developer-profile");
+        if (developerRes.ok) {
+          const developerData = await developerRes.json();
+          setDeveloperProfile(developerData);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user profiles:", error);
     }
   }
 
@@ -322,21 +404,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         createBusinessProfile,
         updateBusinessProfile,
         createDeveloperProfile,
-        updateDeveloperProfile: async (updates: Partial<DeveloperProfile>) => {
-          try {
-            const res = await fetch("/api/developer-profile", {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(updates),
-            });
-            if (!res.ok) throw new Error("Failed");
-            const result = await res.json();
-            setDeveloperProfile(result);
-            return true;
-          } catch {
-            return false;
-          }
-        },
+        updateDeveloperProfile,
+        fetchUserProfiles,
       }}
     >
       {children}

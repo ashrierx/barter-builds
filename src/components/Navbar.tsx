@@ -118,12 +118,6 @@ export default function Navigation() {
                         Dashboard
                       </Link>
                     </li>
-                    <li>
-                      <Link href="/apply" className="cursor-pointer">
-                        <Settings className="mr-2 h-4 w-4" />
-                        Settings
-                      </Link>
-                    </li>
                     <li onClick={handleLogout} className="cursor-pointer">
                       <LogOut className="mr-2 h-4 w-4" />
                       Log out

@@ -6,14 +6,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type BusinessProfile = {
-  id: string;
+  user_id: string;
   business_name: string;
   business_type: string;
   location: string;
+  phone?: string;
+  website?: string;
   description: string;
   offering: string;
-  urgency?: "High" | "Medium" | "Low";
-  createdAt?: string;
+  is_listed?: boolean;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export default function Businesses() {
@@ -21,25 +24,31 @@ export default function Businesses() {
 
   useEffect(() => {
     async function fetchBusinesses() {
-      const res = await fetch("/api/business-profile");
-      const data = await res.json();
-      setBusinesses(data);
+      try {
+        const res = await fetch("/api/businesses");
+        const data = await res.json();
+        setBusinesses(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching businesses:", error);
+        setBusinesses([]);
+      }
     }
     fetchBusinesses();
+    console.log(businesses);
   }, []);
 
-  const getUrgencyStyle = (urgency: string | undefined) => {
-    switch (urgency) {
-      case "High":
-        return "bg-red-600 text-white";
-      case "Medium":
-        return "bg-gray-900 text-white";
-      case "Low":
-        return "bg-gray-200 text-gray-800";
-      default:
-        return "bg-gray-200 text-gray-800";
-    }
-  };
+  // const getUrgencyStyle = (urgency: string | undefined) => {
+  //   switch (urgency) {
+  //     case "High":
+  //       return "bg-red-600 text-white";
+  //     case "Medium":
+  //       return "bg-gray-900 text-white";
+  //     case "Low":
+  //       return "bg-gray-200 text-gray-800";
+  //     default:
+  //       return "bg-gray-200 text-gray-800";
+  //   }
+  // };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
@@ -53,32 +62,32 @@ export default function Businesses() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {businesses.map((business) => (
-          <Link key={business.id} href={`/businesses/${business.id}`}>
+          <Link key={business.user_id} href={`/businesses/${business.user_id}`}>
             <div className="rounded-2xl border bg-white shadow-sm p-6 flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start mb-2">
                   <p className="text-xl font-semibold">
                     {business.business_name}
                   </p>
-                  <span
+                  {/* <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${getUrgencyStyle(
                       business.urgency
                     )}`}
                   >
                     {business.urgency || "Normal"} Priority
-                  </span>
+                  </span> */}
                 </div>
                 <div className="flex items-center gap-4 text-sm text-gray-500 mb-2">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-4 h-4" />
                     {business.location}
                   </span>
-                  {business.createdAt && (
+                  {/* {business.createdAt && (
                     <span className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
                       {new Date(business.createdAt).toLocaleDateString()}
                     </span>
-                  )}
+                  )} */}
                 </div>
                 <span className="inline-block text-xs px-2 py-1 rounded bg-gray-100 text-gray-700 mb-4">
                   {business.business_type}
