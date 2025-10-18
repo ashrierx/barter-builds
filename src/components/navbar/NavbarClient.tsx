@@ -39,6 +39,19 @@ export function NavbarClient({ user }: NavbarClientProps) {
           </div>
 
           <div className="flex items-center space-x-4">
+            <Link
+              href="/about"
+              className="text-gray-600 hover:text-gray-900"
+            >
+              About
+            </Link>
+            <Link
+              href="/contact"
+              className="text-gray-600 hover:text-gray-900"
+            >
+              Contact
+            </Link>
+
             {user ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-700">
@@ -59,15 +72,26 @@ export function NavbarClient({ user }: NavbarClientProps) {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={() => {
-                  setAuthMode("login");
-                  setShowAuthModal(true);
-                }}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-              >
-                Sign In
-              </button>
+              <>
+                <button
+                  onClick={() => {
+                    setAuthMode("signup");
+                    setShowAuthModal(true);
+                  }}
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  Sign Up
+                </button>
+                <button
+                  onClick={() => {
+                    setAuthMode("login");
+                    setShowAuthModal(true);
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Sign In
+                </button>
+              </>
             )}
           </div>
         </div>

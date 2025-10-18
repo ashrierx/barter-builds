@@ -1,58 +1,33 @@
-// src/app/api/businesses/[id]/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { createClient } from "@/utils/supabase/server";
+import { NextResponse } from "next/server";
 
 export async function GET(
-  request: NextRequest,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
+    const supabase = await createClient();
     const { id } = params;
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Business ID is required" },
-        { status: 400 }
-      );
-    }
 
     const { data: business, error } = await supabase
       .from("business_profiles")
-      .select(
-        `
-        user_id,
-        business_name,
-        business_type,
-        location,
-        phone,
-        website,
-        description,
-        offering,
-        is_listed,
-        created_at,
-        updated_at
-      `
-      )
+      .select("*")
       .eq("user_id", id)
       .eq("is_listed", true)
       .single();
 
     if (error) {
-      if (error.code === "PGRST116") {
-        return NextResponse.json(
-          { error: "Business not found" },
-          { status: 404 }
-        );
-      }
       console.error("Error fetching business:", error);
       return NextResponse.json(
-        { error: "Failed to fetch business" },
-        { status: 500 }
+        { error: "Business not found" },
+        { status: 404 }
+      );
+    }
+
+    if (!business) {
+      return NextResponse.json(
+        { error: "Business not found" },
+        { status: 404 }
       );
     }
 
@@ -60,7 +35,7 @@ export async function GET(
   } catch (error) {
     console.error("Unexpected error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "An unexpected error occurred" },
       { status: 500 }
     );
   }

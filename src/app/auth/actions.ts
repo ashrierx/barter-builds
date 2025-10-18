@@ -49,6 +49,12 @@ export async function signupAction(formData: FormData): Promise<AuthResult> {
   const { data, error } = await supabase.auth.signUp({
     email: email.trim(),
     password: password.trim(),
+    options: {
+      data: {
+        name: name.trim(),
+        role: role,
+      },
+    },
   });
 
   if (error) {
@@ -57,18 +63,8 @@ export async function signupAction(formData: FormData): Promise<AuthResult> {
   }
 
   if (data.user) {
-    // Create user profile
-    const { error: profileError } = await supabase.from("users").insert({
-      id: data.user.id,
-      name: name.trim(),
-      email: email.trim(),
-      role: role,
-    });
-
-    if (profileError) {
-      console.error("Profile creation error:", profileError);
-      return { success: false, error: "Failed to create user profile" };
-    }
+    // Wait for trigger to complete
+    await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   revalidatePath("/", "layout");
@@ -149,4 +145,149 @@ export async function getUserProfile() {
   }
 
   return { user, businessProfile, developerProfile };
+}
+
+// ============================================================================
+// PROFILE UPDATE ACTIONS
+// ============================================================================
+
+type DeveloperProfileData = {
+  location: string;
+  portfolio: string;
+  github: string;
+  skills: string;
+  experience: string;
+  availability: string;
+  interested_in: string;
+  is_listed: boolean;
+};
+
+type BusinessProfileData = {
+  business_name: string;
+  business_type: string;
+  location: string;
+  phone: string;
+  website: string;
+  description: string;
+  offering: string;
+  is_listed: boolean;
+};
+
+export async function updateDeveloperProfile(data: DeveloperProfileData): Promise<AuthResult> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  // Check if profile exists
+  const { data: existingProfile } = await supabase
+    .from("developer_profiles")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .single();
+
+  const profileData = {
+    user_id: user.id,
+    location: data.location || null,
+    portfolio: data.portfolio || null,
+    github: data.github || null,
+    skills: data.skills || null,
+    experience: data.experience || null,
+    availability: data.availability || null,
+    interested_in: data.interested_in || null,
+    is_listed: data.is_listed,
+  };
+
+  if (existingProfile) {
+    // Update existing profile
+    const { error } = await supabase
+      .from("developer_profiles")
+      .update(profileData)
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error updating developer profile:", error);
+      return { success: false, error: "Failed to update profile" };
+    }
+  } else {
+    // Insert new profile
+    const { error } = await supabase
+      .from("developer_profiles")
+      .insert(profileData);
+
+    if (error) {
+      console.error("Error creating developer profile:", error);
+      return { success: false, error: "Failed to create profile" };
+    }
+  }
+
+  revalidatePath("/dashboard/developer");
+  return { success: true };
+}
+
+export async function updateBusinessProfile(data: BusinessProfileData): Promise<AuthResult> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  // Validate required fields
+  if (!data.business_name || !data.business_type || !data.location || !data.description || !data.offering) {
+    return { success: false, error: "Please fill in all required fields" };
+  }
+
+  // Check if profile exists
+  const { data: existingProfile } = await supabase
+    .from("business_profiles")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .single();
+
+  const profileData = {
+    user_id: user.id,
+    business_name: data.business_name.trim(),
+    business_type: data.business_type.trim(),
+    location: data.location.trim(),
+    phone: data.phone?.trim() || null,
+    website: data.website?.trim() || null,
+    description: data.description.trim(),
+    offering: data.offering.trim(),
+    is_listed: data.is_listed,
+  };
+
+  if (existingProfile) {
+    // Update existing profile
+    const { error } = await supabase
+      .from("business_profiles")
+      .update(profileData)
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error updating business profile:", error);
+      return { success: false, error: "Failed to update profile" };
+    }
+  } else {
+    // Insert new profile
+    const { error } = await supabase
+      .from("business_profiles")
+      .insert(profileData);
+
+    if (error) {
+      console.error("Error creating business profile:", error);
+      return { success: false, error: "Failed to create profile" };
+    }
+  }
+
+  revalidatePath("/dashboard/business");
+  return { success: true };
 }
