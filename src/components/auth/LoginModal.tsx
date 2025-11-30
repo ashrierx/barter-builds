@@ -44,23 +44,23 @@ export function LoginModal({
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  async function handleSubmit(formData: FormData) {
-    setError("");
+  // async function handleSubmit(formData: FormData) {
+  //   setError("");
 
-    startTransition(async () => {
-      try {
-        const result = await loginAction(formData);
+  //   startTransition(async () => {
+  //     try {
+  //       const result = await loginAction(formData);
 
-        if (!result.success) {
-          setError(result.error || "Login failed");
-        }
-        // If successful, the server action will handle the redirect
-      } catch (error) {
-        console.error("Login error:", error);
-        setError("An unexpected error occurred");
-      }
-    });
-  }
+  //       if (!result.success) {
+  //         setError(result.error || "Login failed");
+  //       }
+  //       // If successful, the server action will handle the redirect
+  //     } catch (error) {
+  //       console.error("Login error:", error);
+  //       setError("An unexpected error occurred");
+  //     }
+  //   });
+  // }
 
   if (!isOpen) return null;
 
@@ -83,7 +83,7 @@ export function LoginModal({
           Welcome back to Barter Builds
         </h3>
 
-        <form action={handleSubmit} className="space-y-4">
+        <form action={loginAction} className="space-y-4">
           {error && (
             <div
               role="alert"

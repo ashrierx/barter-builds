@@ -26,8 +26,8 @@ export default function Home() {
             <Link href="/businesses">
               <button className="btn btn-primary">Browse Businesses</button>
             </Link>
-            <Link href="/apply">
-              <button className="btn btn-outline">Apply to Join</button>
+            <Link href="/about">
+              <button className="btn btn-outline">About Us</button>
             </Link>
           </div>
         </div>

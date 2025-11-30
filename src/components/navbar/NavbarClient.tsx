@@ -81,11 +81,11 @@ export function NavbarClient({ user }: NavbarClientProps) {
                 >
                   Businesses
                 </Link>
-                <div ref={dropdownRef} className="relative flex items-center">
+                <div ref={dropdownRef} className="w-10 h-10 relative flex items-center rounded-full">
                   {/* User icon with initial */}
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold focus:outline-none"
+                    className=" btn btn-primary text-white flex items-center justify-center font-semibold focus:outline-none"
                     aria-label="User menu"
                   >
                     {userInitial}
@@ -131,7 +131,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
                     setAuthMode("login");
                     setShowAuthModal(true);
                   }}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                  className="btn btn-primary"
                 >
                   Sign In
                 </button>
@@ -232,7 +232,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
                   setShowAuthModal(true);
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-left px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                className="w-full text-left px-3 py-2 rounded-md btn-primary text-white hover:bg-blue-700"
               >
                 Sign In
               </button>

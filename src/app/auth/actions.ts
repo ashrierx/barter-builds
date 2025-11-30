@@ -10,15 +10,35 @@ export type AuthResult = {
   error?: string;
 };
 
-export async function loginAction(formData: FormData): Promise<AuthResult> {
+// export async function loginAction(formData: FormData): Promise<AuthResult> {
+//   const supabase = await createClient();
+
+//   const email = formData.get("email") as string;
+//   const password = formData.get("password") as string;
+
+//   if (!email || !password) {
+//     return { success: false, error: "Email and password are required" };
+//   }
+
+//   const { error } = await supabase.auth.signInWithPassword({
+//     email: email.trim(),
+//     password: password.trim(),
+//   });
+
+//   if (error) {
+//     console.error("Login error:", error);
+//     return { success: false, error: "Invalid email or password" };
+//   }
+
+//   revalidatePath("/", "layout");
+//   redirect("/dashboard");
+// }
+
+export async function loginAction(formData: FormData) {
   const supabase = await createClient();
 
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-
-  if (!email || !password) {
-    return { success: false, error: "Email and password are required" };
-  }
 
   const { error } = await supabase.auth.signInWithPassword({
     email: email.trim(),
@@ -26,8 +46,7 @@ export async function loginAction(formData: FormData): Promise<AuthResult> {
   });
 
   if (error) {
-    console.error("Login error:", error);
-    return { success: false, error: "Invalid email or password" };
+    throw new Error("Invalid email or password");
   }
 
   revalidatePath("/", "layout");
@@ -64,7 +83,7 @@ export async function signupAction(formData: FormData): Promise<AuthResult> {
 
   if (data.user) {
     // Wait for trigger to complete
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
   revalidatePath("/", "layout");
@@ -173,7 +192,9 @@ type BusinessProfileData = {
   is_listed: boolean;
 };
 
-export async function updateDeveloperProfile(data: DeveloperProfileData): Promise<AuthResult> {
+export async function updateDeveloperProfile(
+  data: DeveloperProfileData
+): Promise<AuthResult> {
   const supabase = await createClient();
 
   const {
@@ -230,7 +251,9 @@ export async function updateDeveloperProfile(data: DeveloperProfileData): Promis
   return { success: true };
 }
 
-export async function updateBusinessProfile(data: BusinessProfileData): Promise<AuthResult> {
+export async function updateBusinessProfile(
+  data: BusinessProfileData
+): Promise<AuthResult> {
   const supabase = await createClient();
 
   const {
@@ -242,7 +265,13 @@ export async function updateBusinessProfile(data: BusinessProfileData): Promise<
   }
 
   // Validate required fields
-  if (!data.business_name || !data.business_type || !data.location || !data.description || !data.offering) {
+  if (
+    !data.business_name ||
+    !data.business_type ||
+    !data.location ||
+    !data.description ||
+    !data.offering
+  ) {
     return { success: false, error: "Please fill in all required fields" };
   }
 

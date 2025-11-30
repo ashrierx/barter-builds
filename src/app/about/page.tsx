@@ -39,7 +39,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, index, Icon }) => (
       className="relative z-10 w-full max-w-sm flex justify-center step-card-container animate-fade-in-up md:w-auto"
       style={{ animationDelay: `${index * 0.3}s` }}
     >
-      <div className="step-card w-full bg-white rounded-xl shadow-2xl p-6 border-t-4 border-blue-500 transition duration-300 ease-in-out hover:scale-[1.02] hover:shadow-3xl">
+      <div className="step-card w-full bg-white rounded-xl shadow-2xl p-6 border-t-4 border-barterPurple transition duration-300 ease-in-out hover:scale-[1.02] hover:shadow-3xl">
         <div className="card-body items-center text-center">
           {/* Icon Circle */}
           <div className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4 shadow-lg animate-pulse-subtle">
@@ -133,16 +133,16 @@ export default function About() {
   `;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16 font-inter">
+    <div className="font-inter">
       {/* Embedded Styles */}
       <style>{customStyles}</style>
 
       {/* Hero Section */}
-      <div className="text-center mb-16 pt-20 pb-10">
-        <h1 className="text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text leading-tight drop-shadow-lg">
+      <div className="text-center mb-16 py-20 bg-barterPurple/90 text-white">
+        <h1 className="text-4xl font-extrabold mb-6 leading-tight">
           Building the Web, One Barter at a Time
         </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto italic font-medium">
+        <p className="text-xl max-w-3xl mx-auto italic font-medium text-white">
           Barter Builds is a platform where creativity and commerce collide,
           enabling small businesses and developers to trade skills for goods
           and services, building a vibrant ecosystem of fair exchange.
@@ -150,7 +150,7 @@ export default function About() {
       </div>
 
       {/* Mission Statement */}
-      <div className="bg-gray-100 rounded-2xl p-10 mb-20 shadow-xl border-t-4 border-blue-500 transition duration-500 hover:shadow-2xl">
+      {/* <div className="bg-gray-100 rounded-2xl p-10 mb-20 shadow-xl  transition duration-500 hover:shadow-2xl">
         <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">
           Our Mission 🚀
         </h2>
@@ -161,10 +161,10 @@ export default function About() {
           gain valuable goods, services, and experience through meaningful,
           mutually beneficial partnerships.
         </p>
-      </div>
+      </div> */}
 
       {/* How It Works Flow - Horizontal for Desktop, Vertical for Mobile */}
-      <div className="mb-20">
+      <div className="mb-20 mx-6">
         <h2 className="text-4xl font-extrabold text-center mb-16 text-gray-800">
           How It Works
         </h2>
@@ -191,7 +191,7 @@ export default function About() {
                   <StepCard step={step} index={index} Icon={Icon} />
 
                   {/* Horizontal Connector Dot (Desktop) - Overlays the horizontal line */}
-                  <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-blue-500 z-20 shadow-lg border-2 border-white"></div>
+                  {/* <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-blue-500 z-20 shadow-lg border-2 border-white"></div> */}
 
                   {/* Vertical Spacer Dot (Mobile - Overlays the dashed line) */}
                   <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 translate-y-4 w-4 h-4 rounded-full bg-blue-500 md:hidden z-20 shadow-md"></div>
@@ -205,7 +205,7 @@ export default function About() {
       {/* END How It Works Flow */}
 
       {/* Benefits Section */}
-      <div className="grid md:grid-cols-2 gap-10">
+      <div className="grid md:grid-cols-2 gap-10 mx-8">
         {/* For Businesses */}
         <div className="card bg-gradient-to-br from-blue-50 to-indigo-100 shadow-xl rounded-xl p-8 transform transition duration-300 hover:shadow-2xl hover:translate-y-[-4px]">
           <div className="card-body">

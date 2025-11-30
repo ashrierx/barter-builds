@@ -28,8 +28,8 @@ export default function Contact() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16">
-      <div className="text-center mb-12">
+    <div className="bg-gray-50">
+      <div className="text-center mb-12 p-6">
         <h1 className="text-5xl mb-6">Contact Us</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Have questions about Barter Builds? Need help with your application?
@@ -37,10 +37,10 @@ export default function Contact() {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-8 px-12">
         {/* Contact Information */}
         <div className="space-y-6">
-          <div className="border rounded-lg p-6">
+          <div className="border rounded-lg p-6 bg-white">
             <h2 className="font-semibold mb-4">Get in Touch</h2>
             <div className="space-y-4 text-sm">
               <div className="flex items-start gap-3">
@@ -84,7 +84,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="border rounded-lg p-6">
+          <div className="border rounded-lg p-6 bg-white">
             <h2 className="font-semibold mb-4">Frequently Asked</h2>
             <div className="space-y-4 text-sm">
               <div>
@@ -110,7 +110,7 @@ export default function Contact() {
         </div>
 
         {/* Contact Form */}
-        <div className="lg:col-span-2 border rounded-lg p-6">
+        <div className="lg:col-span-2 border rounded-lg p-6 bg-white">
           <h2 className="font-semibold">Send us a Message</h2>
           <p className="text-sm text-muted-foreground mb-6">
             Fill out the form below and we will get back to you as soon as

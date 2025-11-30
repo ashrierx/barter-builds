@@ -6,7 +6,11 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        barterPurple: 'rgb(67 42 213)', 
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
