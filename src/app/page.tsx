@@ -1,14 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
     // subtract navbar height (h-16 = 64px)
     <div className="relative h-[calc(100vh-2.5rem)] overflow-hidden">
       {/* Background Image - starts below navbar */}
-      <img
+      <Image
         src="https://images.unsplash.com/photo-1485841890310-6a055c88698a?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0"
         alt="Small business owners and developers working together"
+        fill
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        priority
       />
       {/* Overlay */}
       {/* <div className="absolute inset-0 bg-black/5 pointer-events-none"></div> */}

@@ -348,7 +348,7 @@ export function DeveloperProfileForm({
           placeholder="What types of projects or collaborations are you interested in?"
         />
         <p className="mt-1 text-sm text-gray-500">
-          Describe the kind of work or partnerships you're seeking
+          Describe the kind of work or partnerships you&apos;re seeking
         </p>
       </div>
 

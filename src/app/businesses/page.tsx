@@ -34,7 +34,6 @@ export default function Businesses() {
       }
     }
     fetchBusinesses();
-    console.log(businesses);
   }, []);
 
   // const getUrgencyStyle = (urgency: string | undefined) => {
