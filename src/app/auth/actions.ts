@@ -3,7 +3,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
+import { authRateLimit } from "@/utils/rateLimit";
+import { isValidEmail, sanitizeInput, isValidPassword, getClientIP } from "@/utils/security";
 
 export type AuthResult = {
   success: boolean;
@@ -35,10 +38,34 @@ export type AuthResult = {
 // }
 
 export async function loginAction(formData: FormData) {
+  // Rate limiting
+  const headersList = await headers();
+  const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+             headersList.get("x-real-ip") || 
+             "unknown";
+  const rateLimitResult = authRateLimit.check(`login:${ip}`);
+
+  if (rateLimitResult.remaining < 0) {
+    throw new Error("Too many login attempts. Please try again in 15 minutes.");
+  }
+
   const supabase = await createClient();
 
-  const email = formData.get("email") as string;
+  const email = sanitizeInput(formData.get("email") as string, 254);
   const password = formData.get("password") as string;
+
+  // Input validation
+  if (!email || !password) {
+    throw new Error("Email and password are required");
+  }
+
+  if (!isValidEmail(email)) {
+    throw new Error("Invalid email format");
+  }
+
+  if (password.length < 8 || password.length > 128) {
+    throw new Error("Invalid email or password"); // Don't reveal password requirements
+  }
 
   const { error } = await supabase.auth.signInWithPassword({
     email: email.trim(),
@@ -54,15 +81,44 @@ export async function loginAction(formData: FormData) {
 }
 
 export async function signupAction(formData: FormData): Promise<AuthResult> {
+  // Rate limiting
+  const headersList = await headers();
+  const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+             headersList.get("x-real-ip") || 
+             "unknown";
+  const rateLimitResult = authRateLimit.check(`signup:${ip}`);
+
+  if (rateLimitResult.remaining < 0) {
+    return { success: false, error: "Too many signup attempts. Please try again in 15 minutes." };
+  }
+
   const supabase = await createClient();
 
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
+  const name = sanitizeInput(formData.get("name") as string, 100);
+  const email = sanitizeInput(formData.get("email") as string, 254);
   const password = formData.get("password") as string;
   const role = formData.get("role") as "business" | "developer";
 
+  // Input validation
   if (!name || !email || !password || !role) {
     return { success: false, error: "All fields are required" };
+  }
+
+  if (name.length < 2 || name.length > 100) {
+    return { success: false, error: "Name must be between 2 and 100 characters" };
+  }
+
+  if (!isValidEmail(email)) {
+    return { success: false, error: "Invalid email format" };
+  }
+
+  const passwordValidation = isValidPassword(password);
+  if (!passwordValidation.valid) {
+    return { success: false, error: passwordValidation.errors.join(". ") };
+  }
+
+  if (role !== "business" && role !== "developer") {
+    return { success: false, error: "Invalid role selected" };
   }
 
   const { data, error } = await supabase.auth.signUp({

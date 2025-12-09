@@ -1,6 +1,8 @@
 // src/app/api/business-profile/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { strictApiRateLimit } from "@/utils/rateLimit";
+import { sanitizeInput, isValidUrl } from "@/utils/security";
 
 export async function GET() {
   try {
@@ -68,6 +70,23 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting for write operations
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+               request.headers.get("x-real-ip") || 
+               "unknown";
+    const rateLimitResult = strictApiRateLimit.check(`business-profile-post:${ip}`);
+    if (rateLimitResult.remaining < 0) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": Math.ceil((rateLimitResult.reset - Date.now()) / 1000).toString(),
+          },
+        }
+      );
+    }
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 
@@ -117,7 +136,7 @@ export async function POST(request: NextRequest) {
 
     const profileData = await request.json();
 
-    // Validate required fields
+    // Validate and sanitize input
     const requiredFields = [
       "business_name",
       "business_type",
@@ -134,18 +153,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Sanitize and validate inputs
+    const businessName = sanitizeInput(profileData.business_name, 200);
+    const businessType = sanitizeInput(profileData.business_type, 100);
+    const location = sanitizeInput(profileData.location, 200);
+    const description = sanitizeInput(profileData.description, 2000);
+    const offering = sanitizeInput(profileData.offering, 2000);
+    const phone = profileData.phone ? sanitizeInput(profileData.phone, 20) : null;
+    const website = profileData.website ? sanitizeInput(profileData.website, 500) : null;
+
+    // Validate website URL if provided
+    if (website && !isValidUrl(website)) {
+      return NextResponse.json(
+        { error: "Invalid website URL format" },
+        { status: 400 }
+      );
+    }
+
     // Create business profile
     const { data: newProfile, error } = await supabase
       .from("business_profiles")
       .insert({
         user_id: user.id,
-        business_name: profileData.business_name,
-        business_type: profileData.business_type,
-        location: profileData.location,
-        phone: profileData.phone || null,
-        website: profileData.website || null,
-        description: profileData.description,
-        offering: profileData.offering,
+        business_name: businessName,
+        business_type: businessType,
+        location: location,
+        phone: phone,
+        website: website,
+        description: description,
+        offering: offering,
         is_listed: profileData.is_listed ?? true,
       })
       .select()
