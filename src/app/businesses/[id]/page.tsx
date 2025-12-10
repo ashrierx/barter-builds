@@ -51,45 +51,71 @@ export default function BusinessDetailPage() {
   if (!business) return <p className="text-center py-20">Business not found</p>;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">{business.business_name}</h1>
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="grid md:grid-cols-2 gap-6">
+    <div className="max-w-4xl mx-auto px-4 py-10">
+      <h1 className="text-4xl font-bold text-slate-900 mb-6">
+        {business.business_name}
+      </h1>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-purple-100 p-8">
+        <div className="grid md:grid-cols-2 gap-10">
+          {/* Left Column */}
           <div>
-            <h2 className="text-xl font-semibold mb-2">Business Details</h2>
-            <p>
-              <strong>Type:</strong> {business.business_type}
-            </p>
-            <p>
-              <strong>Location:</strong> {business.location}
-            </p>
-            {business.phone && (
+            <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+              Business Details
+            </h2>
+
+            <div className="space-y-2 text-slate-700">
               <p>
-                <strong>Phone:</strong> {business.phone}
+                <strong className="text-slate-900">Type:</strong>{" "}
+                {business.business_type}
               </p>
-            )}
-            {business.website && (
               <p>
-                <strong>Website:</strong>
-                <a
-                  href={business.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline ml-1"
-                >
-                  {business.website}
-                </a>
+                <strong className="text-slate-900">Location:</strong>{" "}
+                {business.location}
               </p>
-            )}
+
+              {business.phone && (
+                <p>
+                  <strong className="text-slate-900">Phone:</strong>{" "}
+                  {business.phone}
+                </p>
+              )}
+
+              {business.website && (
+                <p>
+                  <strong className="text-slate-900">Website:</strong>
+                  <a
+                    href={business.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-purple-700 hover:text-purple-900 ml-1 font-medium"
+                  >
+                    {business.website}
+                  </a>
+                </p>
+              )}
+            </div>
           </div>
-          <div>
-            <h2 className="text-xl font-semibold mb-2">What We Offer</h2>
-            <p className="text-gray-700">{business.offering}</p>
+
+          {/* Right Column */}
+          <div className="md:border-l md:pl-10 border-purple-100">
+            <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+              What We Offer
+            </h2>
+            <p className="text-slate-700 text-lg leading-relaxed">
+              {business.offering}
+            </p>
           </div>
         </div>
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-2">About Us</h2>
-          <p className="text-gray-700">{business.description}</p>
+
+        {/* About Us */}
+        <div className="mt-10">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-3">
+            About Us
+          </h2>
+          <p className="text-slate-700 leading-relaxed">
+            {business.description}
+          </p>
         </div>
       </div>
     </div>

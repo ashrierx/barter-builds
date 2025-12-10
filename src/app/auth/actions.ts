@@ -141,9 +141,7 @@ export async function signupAction(formData: FormData): Promise<AuthResult> {
     // Wait for trigger to complete
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
-
-  revalidatePath("/", "layout");
-  redirect("/dashboard");
+  return { success: true };
 }
 
 export async function logoutAction() {

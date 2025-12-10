@@ -85,7 +85,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
                   {/* User icon with initial */}
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className=" btn btn-primary text-white flex items-center justify-center font-semibold focus:outline-none"
+                    className="btn btn-primary text-white flex items-center justify-center font-semibold focus:outline-none w-10"
                     aria-label="User menu"
                   >
                     {userInitial}

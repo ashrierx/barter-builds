@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Loader2, X } from "lucide-react";
 import { signupAction } from "@/app/auth/actions";
+import { redirect } from "next/navigation";
 
 type SignupModalProps = {
   isOpen: boolean;
@@ -25,7 +26,10 @@ export function SignupModal({
       try {
         const result = await signupAction(formData);
 
-        if (!result.success) {
+        if (result.success) {
+          onClose();
+          redirect("/dashboard");
+        } else {
           setError(result.error || "Signup failed");
         }
         // If successful, the server action will handle the redirect
@@ -53,7 +57,7 @@ export function SignupModal({
           <X className="w-5 h-5" />
         </button>
 
-        <h3 className="text-lg font-semibold mb-4">Join Barter Builds</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-500">Join Barter Builds</h3>
 
         <form action={handleSubmit} className="space-y-4">
           {error && (

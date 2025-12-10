@@ -79,7 +79,7 @@ export function LoginModal({
           <X className="w-5 h-5" />
         </button>
 
-        <h3 className="text-lg font-semibold mb-4">
+        <h3 className="text-lg font-semibold mb-4 text-gray-500">
           Welcome back to Barter Builds
         </h3>
 

@@ -29,15 +29,15 @@ export default function Contact() {
 
   return (
     <div className="bg-gray-50">
-      <div className="text-center mb-12 p-6">
-        <h1 className="text-5xl mb-6">Contact Us</h1>
+      <div className="text-center mb-12 p-6 text-gray-500">
+        <h1 className="text-5xl mb-6 ">Contact Us</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Have questions about Barter Builds? Need help with your application?
           We are here to help you navigate the world of skill-based trading.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8 px-12">
+      <div className="grid lg:grid-cols-3 gap-8 px-12 text-gray-500">
         {/* Contact Information */}
         <div className="space-y-6">
           <div className="border rounded-lg p-6 bg-white">

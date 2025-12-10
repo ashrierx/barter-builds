@@ -15,7 +15,7 @@ export default async function DeveloperDashboard() {
   }
 
   return (
-    <div>
+    <div className="px-5">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
         Developer Dashboard
       </h1>

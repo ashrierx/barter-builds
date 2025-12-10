@@ -62,47 +62,38 @@ export default function Businesses() {
       <div className="grid gap-6 md:grid-cols-2">
         {businesses.map((business) => (
           <Link key={business.user_id} href={`/businesses/${business.user_id}`}>
-            <div className="rounded-2xl border bg-white shadow-sm p-6 flex flex-col justify-between">
-              <div>
-                <div className="flex justify-between items-start mb-2">
-                  <p className="text-xl font-semibold">
-                    {business.business_name}
-                  </p>
-                  {/* <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${getUrgencyStyle(
-                      business.urgency
-                    )}`}
-                  >
-                    {business.urgency || "Normal"} Priority
-                  </span> */}
-                </div>
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-2">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    {business.location}
-                  </span>
-                  {/* {business.createdAt && (
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {new Date(business.createdAt).toLocaleDateString()}
-                    </span>
-                  )} */}
-                </div>
-                <span className="inline-block text-xs px-2 py-1 rounded bg-gray-100 text-gray-700 mb-4">
-                  {business.business_type}
-                </span>
-
-                <p className="text-gray-600 mb-4">{business.description}</p>
-
-                <div className="mb-4">
-                  <h4 className="font-medium mb-2">Offering in Exchange:</h4>
-                  <p className="text-sm bg-gray-100 p-3 rounded-lg">
-                    {business.offering}
-                  </p>
-                </div>
+            <div className="rounded-2xl border border-[#432ad5]/20 bg-white shadow-sm hover:shadow-md transition p-6">
+              <div className="flex justify-between items-start mb-3">
+                <p className="text-xl font-semibold text-slate-900">
+                  {business.business_name}
+                </p>
               </div>
 
-              <button className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-2 rounded-xl hover:bg-gray-800 transition">
+              <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4 text-[#432ad5]" />
+                  {business.location}
+                </span>
+              </div>
+
+              <span className="inline-block text-xs px-3 py-1 rounded-full bg-[#432ad5]/10 text-[#432ad5] font-medium mb-4">
+                {business.business_type}
+              </span>
+
+              <p className="text-slate-600 mb-4 leading-relaxed">
+                {business.description}
+              </p>
+
+              <div className="mb-4">
+                <h4 className="font-semibold text-slate-900 mb-2">
+                  Offering in Exchange:
+                </h4>
+                <p className="text-sm rounded-lg text-slate-700">
+                  {business.offering}
+                </p>
+              </div>
+
+              <button className="w-full flex items-center justify-center gap-2 bg-[#432ad5] text-white py-3 rounded-xl font-medium hover:bg-[#3920cb] transition">
                 <ExternalLink className="w-4 h-4" />
                 Contact {business.business_name}
               </button>
