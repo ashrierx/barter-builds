@@ -4,7 +4,7 @@ export default function BusinessesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+    <section className="bg-white">
       {children}
     </section>
   );

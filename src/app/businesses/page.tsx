@@ -50,9 +50,9 @@ export default function Businesses() {
   // };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16">
+    <div className="max-w-6xl mx-auto px-4 py-16 bg-white">
       <div className="text-center mb-12">
-        <h1 className="text-5xl mb-6 font-bold">Businesses Seeking Help</h1>
+        <h1 className="text-5xl mb-6 font-bold text-gray-500">Businesses Seeking Help</h1>
         <p className="text-xl text-gray-500 max-w-3xl mx-auto">
           Browse local businesses that need websites and discover what valuable
           goods and services they are offering in exchange.

@@ -51,7 +51,7 @@ export default function BusinessDetailPage() {
   if (!business) return <p className="text-center py-20">Business not found</p>;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
+    <div className="max-w-4xl mx-auto px-4 py-10 bg-white">
       <h1 className="text-4xl font-bold text-slate-900 mb-6">
         {business.business_name}
       </h1>
