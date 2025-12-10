@@ -26,11 +26,11 @@ export default function Home() {
             money required - just fair exchange.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/businesses">
+            {/* <Link href="/businesses">
               <button className="btn btn-primary">Browse Businesses</button>
-            </Link>
+            </Link> */}
             <Link href="/about">
-              <button className="btn btn-outline">About Us</button>
+              <button className="btn btn-outline">Read more about us</button>
             </Link>
           </div>
         </div>

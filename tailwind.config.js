@@ -1,88 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/utils/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  // Safelist to prevent purging of dynamic classes in production
-  safelist: [
-    // All color utilities - base classes
-    {
-      pattern: /^(bg|text|border|ring)-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|white|black)-(50|100|200|300|400|500|600|700|800|900|950)?$/,
-      variants: ['hover', 'focus', 'active', 'disabled'],
-    },
-    // Specific classes that are commonly used
-    'bg-white',
-    'bg-gray-50',
-    'bg-gray-100',
-    'bg-gray-200',
-    'bg-gray-300',
-    'bg-gray-400',
-    'bg-gray-500',
-    'bg-gray-600',
-    'bg-gray-700',
-    'bg-gray-800',
-    'bg-gray-900',
-    'text-white',
-    'text-gray-50',
-    'text-gray-100',
-    'text-gray-200',
-    'text-gray-300',
-    'text-gray-400',
-    'text-gray-500',
-    'text-gray-600',
-    'text-gray-700',
-    'text-gray-800',
-    'text-gray-900',
-    'text-blue-500',
-    'text-blue-600',
-    'text-red-700',
-    'text-red-800',
-    'text-green-800',
-    'border-gray-200',
-    'border-gray-300',
-    'border-red-200',
-    'border-green-200',
-    'hover:bg-gray-800',
-    'hover:bg-gray-700',
-    'hover:bg-gray-300',
-    'hover:text-gray-900',
-    'hover:text-gray-700',
-    'hover:text-blue-700',
-    'hover:underline',
-    'focus:ring-blue-500',
-    'focus:border-blue-500',
-    'focus:border-transparent',
-    // DaisyUI classes
-    'btn',
-    'btn-primary',
-    'btn-secondary',
-    'btn-outline',
-    'alert',
-    'alert-error',
-    // Common utility classes
-    'rounded-md',
-    'rounded-lg',
-    'rounded-xl',
-    'rounded-full',
-    'shadow-sm',
-    'shadow-md',
-    'shadow-lg',
-    'px-3',
-    'py-1',
-    'px-6',
-    'py-2',
-    'px-4',
-    'py-3',
-    'border-b',
-    'border-transparent',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -93,6 +15,14 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dark"],
+    themes: [
+      {
+        light: {
+          primary: "rgb(67 42 213)", // your barterPurple
+          "primary-content": "#ffffff",
+        },
+      },
+      "dark"
+    ],
   },
 };

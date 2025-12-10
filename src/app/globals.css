@@ -31,3 +31,17 @@ details > summary {
 details > summary::-webkit-details-marker {
   display: none;
 }
+
+@layer components {
+  .btn-primary {
+    background-color: rgb(67 42 213);
+    border-color: rgb(67 42 213);
+    color: #ffffff;
+    padding: .5rem;
+  }
+  
+  .btn-primary:hover {
+    background-color: rgb(57 32 203);
+    border-color: rgb(57 32 203);
+  }
+}

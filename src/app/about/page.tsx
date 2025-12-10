@@ -138,7 +138,7 @@ export default function About() {
       <style>{customStyles}</style>
 
       {/* Hero Section */}
-      <div className="text-center mb-16 py-20 bg-barterPurple/90 text-white">
+      <div className="text-center mb-16 py-20 px-5 bg-barterPurple/90 text-white ">
         <h1 className="text-4xl font-extrabold mb-6 leading-tight">
           Building the Web, One Barter at a Time
         </h1>
