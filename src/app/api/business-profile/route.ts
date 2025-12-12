@@ -6,26 +6,22 @@ import { sanitizeInput, isValidUrl } from "@/utils/security";
 
 export async function GET() {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
       return NextResponse.json(
         { error: "Missing Supabase configuration" },
         { status: 500 }
-      )
+      );
     }
 
-    const supabase = createClient(
-      supabaseUrl,
-      supabaseKey,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
-    );
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
 
     // Get authenticataed user
     const {
@@ -71,36 +67,38 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting for write operations
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
-               request.headers.get("x-real-ip") || 
-               "unknown";
-    const rateLimitResult = strictApiRateLimit.check(`business-profile-post:${ip}`);
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    const rateLimitResult = strictApiRateLimit.check(
+      `business-profile-post:${ip}`
+    );
     if (rateLimitResult.remaining < 0) {
       return NextResponse.json(
         { error: "Too many requests. Please try again later." },
         {
           status: 429,
           headers: {
-            "Retry-After": Math.ceil((rateLimitResult.reset - Date.now()) / 1000).toString(),
+            "Retry-After": Math.ceil(
+              (rateLimitResult.reset - Date.now()) / 1000
+            ).toString(),
           },
         }
       );
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
       return NextResponse.json(
         { error: "Missing Supabase configuration" },
         { status: 500 }
-      )
+      );
     }
 
-    const supabase = createClient(
-      supabaseUrl,
-      supabaseKey
-    );
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Get the authorization header
     const authHeader = request.headers.get("authorization");
@@ -159,13 +157,52 @@ export async function POST(request: NextRequest) {
     const location = sanitizeInput(profileData.location, 200);
     const description = sanitizeInput(profileData.description, 2000);
     const offering = sanitizeInput(profileData.offering, 2000);
-    const phone = profileData.phone ? sanitizeInput(profileData.phone, 20) : null;
-    const website = profileData.website ? sanitizeInput(profileData.website, 500) : null;
+    const phone = profileData.phone
+      ? sanitizeInput(profileData.phone, 20)
+      : null;
+    const website = profileData.website
+      ? sanitizeInput(profileData.website, 500)
+      : null;
+    const contactName = profileData.contact_name
+      ? sanitizeInput(profileData.contact_name, 100)
+      : null;
+    const contactPhone = profileData.contact_phone
+      ? sanitizeInput(profileData.contact_phone, 20)
+      : null;
+    const contactEmail = profileData.contact_email
+      ? sanitizeInput(profileData.contact_email, 100)
+      : null;
+    const coverPhoto = profileData.cover_photo
+      ? sanitizeInput(profileData.cover_photo, 500)
+      : null;
+    const priorityLevel = profileData.priority_level || "medium";
+    const requirements = Array.isArray(profileData.requirements)
+      ? profileData.requirements
+      : [];
+    const plannedPages = Array.isArray(profileData.planned_pages)
+      ? profileData.planned_pages
+      : [];
 
     // Validate website URL if provided
     if (website && !isValidUrl(website)) {
       return NextResponse.json(
         { error: "Invalid website URL format" },
+        { status: 400 }
+      );
+    }
+
+    // Validate cover photo URL if provided
+    if (coverPhoto && !isValidUrl(coverPhoto)) {
+      return NextResponse.json(
+        { error: "Invalid cover photo URL format" },
+        { status: 400 }
+      );
+    }
+
+    // Validate priority level
+    if (!["low", "medium", "high", "critical"].includes(priorityLevel)) {
+      return NextResponse.json(
+        { error: "Invalid priority level" },
         { status: 400 }
       );
     }
@@ -183,6 +220,13 @@ export async function POST(request: NextRequest) {
         description: description,
         offering: offering,
         is_listed: profileData.is_listed ?? true,
+        requirements: requirements,
+        cover_photo: coverPhoto,
+        priority_level: priorityLevel,
+        contact_name: contactName,
+        contact_phone: contactPhone,
+        contact_email: contactEmail,
+        planned_pages: plannedPages,
       })
       .select()
       .single();
@@ -214,20 +258,17 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
       return NextResponse.json(
         { error: "Missing Supabase configuration" },
         { status: 500 }
-      )
+      );
     }
 
-    const supabase = createClient(
-      supabaseUrl,
-      supabaseKey
-    );
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Get the authorization header
     const authHeader = request.headers.get("authorization");
@@ -287,26 +328,22 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE() {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
       return NextResponse.json(
         { error: "Missing Supabase configuration" },
         { status: 500 }
-      )
+      );
     }
 
-    const supabase = createClient(
-      supabaseUrl,
-      supabaseKey,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
-    );
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
 
     // Get authenticated user
     const {

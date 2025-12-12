@@ -6,7 +6,12 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { authRateLimit } from "@/utils/rateLimit";
-import { isValidEmail, sanitizeInput, isValidPassword, getClientIP } from "@/utils/security";
+import {
+  isValidEmail,
+  sanitizeInput,
+  isValidPassword,
+  getClientIP,
+} from "@/utils/security";
 
 export type AuthResult = {
   success: boolean;
@@ -40,9 +45,10 @@ export type AuthResult = {
 export async function loginAction(formData: FormData) {
   // Rate limiting
   const headersList = await headers();
-  const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || 
-             headersList.get("x-real-ip") || 
-             "unknown";
+  const ip =
+    headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    headersList.get("x-real-ip") ||
+    "unknown";
   const rateLimitResult = authRateLimit.check(`login:${ip}`);
 
   if (rateLimitResult.remaining < 0) {
@@ -83,13 +89,17 @@ export async function loginAction(formData: FormData) {
 export async function signupAction(formData: FormData): Promise<AuthResult> {
   // Rate limiting
   const headersList = await headers();
-  const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || 
-             headersList.get("x-real-ip") || 
-             "unknown";
+  const ip =
+    headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    headersList.get("x-real-ip") ||
+    "unknown";
   const rateLimitResult = authRateLimit.check(`signup:${ip}`);
 
   if (rateLimitResult.remaining < 0) {
-    return { success: false, error: "Too many signup attempts. Please try again in 15 minutes." };
+    return {
+      success: false,
+      error: "Too many signup attempts. Please try again in 15 minutes.",
+    };
   }
 
   const supabase = await createClient();
@@ -105,7 +115,10 @@ export async function signupAction(formData: FormData): Promise<AuthResult> {
   }
 
   if (name.length < 2 || name.length > 100) {
-    return { success: false, error: "Name must be between 2 and 100 characters" };
+    return {
+      success: false,
+      error: "Name must be between 2 and 100 characters",
+    };
   }
 
   if (!isValidEmail(email)) {
@@ -244,6 +257,13 @@ type BusinessProfileData = {
   description: string;
   offering: string;
   is_listed: boolean;
+  requirements: string[];
+  cover_photo: string;
+  priority_level: "low" | "medium" | "high" | "critical";
+  contact_name: string;
+  contact_phone: string;
+  contact_email: string;
+  planned_pages: string[];
 };
 
 export async function updateDeveloperProfile(
@@ -346,6 +366,13 @@ export async function updateBusinessProfile(
     description: data.description.trim(),
     offering: data.offering.trim(),
     is_listed: data.is_listed,
+    requirements: data.requirements || [],
+    cover_photo: data.cover_photo?.trim() || null,
+    priority_level: data.priority_level || "medium",
+    contact_name: data.contact_name?.trim() || null,
+    contact_phone: data.contact_phone?.trim() || null,
+    contact_email: data.contact_email?.trim() || null,
+    planned_pages: data.planned_pages || [],
   };
 
   if (existingProfile) {

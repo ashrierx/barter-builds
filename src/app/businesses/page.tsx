@@ -7,16 +7,23 @@ import { useEffect, useState } from "react";
 
 type BusinessProfile = {
   user_id: string;
-  business_name: string;
-  business_type: string;
-  location: string;
-  phone?: string;
-  website?: string;
-  description: string;
-  offering: string;
-  is_listed?: boolean;
-  created_at?: string;
-  updated_at?: string;
+  business_name: string | null;
+  business_type: string | null;
+  location: string | null;
+  phone: string | null;
+  website: string | null;
+  description: string | null;
+  offering: string | null;
+  is_listed: boolean;
+  requirements: string[] | null;
+  cover_photo: string | null;
+  priority_level: "low" | "medium" | "high" | "critical" | null;
+  contact_name: string | null;
+  contact_phone: string | null;
+  contact_email: string | null;
+  planned_pages: string[] | null;
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 export default function Businesses() {
@@ -52,7 +59,9 @@ export default function Businesses() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-16 bg-white">
       <div className="text-center mb-12">
-        <h1 className="text-5xl mb-6 font-bold text-gray-500">Businesses Seeking Help</h1>
+        <h1 className="text-5xl mb-6 font-bold text-gray-500">
+          Businesses Seeking Help
+        </h1>
         <p className="text-xl text-gray-500 max-w-3xl mx-auto">
           Browse local businesses that need websites and discover what valuable
           goods and services they are offering in exchange.
@@ -95,7 +104,8 @@ export default function Businesses() {
 
               <button className="w-full flex items-center justify-center gap-2 bg-[#432ad5] text-white py-3 rounded-xl font-medium hover:bg-[#3920cb] transition">
                 <ExternalLink className="w-4 h-4" />
-                Contact {business.business_name}
+                {/* Contact {business.business_name} */}
+                View Details
               </button>
             </div>
           </Link>

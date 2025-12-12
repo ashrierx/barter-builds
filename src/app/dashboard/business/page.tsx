@@ -21,9 +21,7 @@ export default async function BusinessDashboard() {
       </h1>
 
       <div className="bg-white shadow rounded-lg p-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">
-          Business Profile
-        </h2>
+
         <BusinessProfileForm initialProfile={businessProfile} />
       </div>
     </div>
