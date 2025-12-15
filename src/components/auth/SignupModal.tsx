@@ -57,7 +57,7 @@ export function SignupModal({
           <X className="w-5 h-5" />
         </button>
 
-        <h3 className="text-lg font-semibold mb-4 text-gray-500">Join Barter Builds</h3>
+        <h3 className="text-lg font-semibold mb-4 text-black">Join Barter Builds</h3>
 
         <form action={handleSubmit} className="space-y-4">
           {error && (

@@ -59,7 +59,7 @@ export default function BusinessDetailPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <Link href="/businesses">
-        <button className="btn btn-outline mb-5">
+        <button className="btn btn-outline mb-5 text-black">
           <span>
             <ArrowLeft />
           </span>
@@ -85,7 +85,7 @@ export default function BusinessDetailPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Header Card */}
           <div className="bg-white rounded-2xl border p-6">
-            <h1 className="text-2xl font-semibold mb-2">
+            <h1 className="text-2xl font-semibold mb-2 text-black">
               {business.business_name}
             </h1>
 
@@ -105,7 +105,7 @@ export default function BusinessDetailPage() {
               )}
             </div>
             <div className="flex gap-2 mb-6">
-              <span className="px-3 py-1 rounded-lg border-gray-200 border text-sm">
+              <span className="px-3 py-1 rounded-lg border-gray-200 border text-sm text-gray-700">
                 {business.business_type}
               </span>
               {business.priority_level && (
@@ -131,16 +131,16 @@ export default function BusinessDetailPage() {
 
           {/* Offering */}
           <div className="bg-white rounded-2xl border p-6">
-            <p className="mb-4">Project Requirements</p>
-            <h2 className="font-semibold mb-3">What They&apos;re Offering</h2>
-            <div className="bg-slate-100 rounded-xl p-4 text-sm">
+            <p className="mb-4 text-black">Project Requirements</p>
+            <h2 className="font-semibold mb-3 text-black">What They&apos;re Offering</h2>
+            <div className="bg-slate-100 rounded-xl p-4 text-sm text-gray-700">
               {business.offering}
             </div>
 
             {/* Requirements */}
             {business.requirements?.length && (
               <div className="bg-white py-8">
-                <h2 className="font-semibold mb-3">Required Features:</h2>
+                <h2 className="font-semibold mb-3 text-black">Required Features:</h2>
                 <div className="text-gray-700">
                   {business.requirements.map((req, i) => (
                     <ul key={i} className="px-3 py-1 text-sm list-disc">
@@ -154,12 +154,12 @@ export default function BusinessDetailPage() {
             {/* Planned Pages */}
             {business.planned_pages?.length && (
               <div className="bg-white pb-8">
-                <h2 className="font-semibold mb-3">Planned Pages</h2>
+                <h2 className="font-semibold mb-3 text-black">Planned Pages</h2>
                 <div className="flex flex-wrap gap-2">
                   {business.planned_pages.map((page, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1 rounded-full bg-slate-100 text-sm"
+                      className="px-3 py-1 rounded-full bg-slate-100 text-gray-700 text-sm"
                     >
                       {page}
                     </span>
@@ -177,10 +177,10 @@ export default function BusinessDetailPage() {
             business.contact_email ||
             business.contact_phone) && (
             <div className="bg-white rounded-2xl border p-6">
-              <h3 className="font-semibold mb-4">Business Owner</h3>
+              <h3 className="font-semibold mb-4 text-black">Business Owner</h3>
 
               {business.contact_name && (
-                <p className="font-medium mb-2">{business.contact_name}</p>
+                <p className="font-medium mb-2 text-black">{business.contact_name}</p>
               )}
 
               <hr></hr>
