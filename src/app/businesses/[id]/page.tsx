@@ -59,12 +59,14 @@ export default function BusinessDetailPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <Link href="/businesses">
-        <button className="btn btn-outline mb-5 text-black">
+        <div className="flex items-center gap-1 mb-4">
+          <ArrowLeft />
           <span>
-            <ArrowLeft />
+            <button className="btn btn-outline text-black">
+              Back to Businesses
+            </button>
           </span>
-          Back to Businesses
-        </button>
+        </div>
       </Link>
 
       {/* Cover Photo */}
@@ -132,7 +134,9 @@ export default function BusinessDetailPage() {
           {/* Offering */}
           <div className="bg-white rounded-2xl border p-6">
             <p className="mb-4 text-black">Project Requirements</p>
-            <h2 className="font-semibold mb-3 text-black">What They&apos;re Offering</h2>
+            <h2 className="font-semibold mb-3 text-black">
+              What They&apos;re Offering
+            </h2>
             <div className="bg-slate-100 rounded-xl p-4 text-sm text-gray-700">
               {business.offering}
             </div>
@@ -140,7 +144,9 @@ export default function BusinessDetailPage() {
             {/* Requirements */}
             {business.requirements?.length && (
               <div className="bg-white py-8">
-                <h2 className="font-semibold mb-3 text-black">Required Features:</h2>
+                <h2 className="font-semibold mb-3 text-black">
+                  Required Features:
+                </h2>
                 <div className="text-gray-700">
                   {business.requirements.map((req, i) => (
                     <ul key={i} className="px-3 py-1 text-sm list-disc">
@@ -180,7 +186,9 @@ export default function BusinessDetailPage() {
               <h3 className="font-semibold mb-4 text-black">Business Owner</h3>
 
               {business.contact_name && (
-                <p className="font-medium mb-2 text-black">{business.contact_name}</p>
+                <p className="font-medium mb-2 text-black">
+                  {business.contact_name}
+                </p>
               )}
 
               <hr></hr>
