@@ -7,6 +7,7 @@ import {
   updateBusinessProfile,
 } from "@/app/auth/actions";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 // ============================================================================
 // TYPE DEFINITIONS BASED ON TABLE SCHEMAS
@@ -663,10 +664,12 @@ export function BusinessProfileForm({
         {/* Cover Photo */}
         {coverPhotoPreview && (
           <div className="mb-8 rounded-xl overflow-hidden">
-            <img
+            <Image
               src={coverPhotoPreview}
               alt="Business cover"
               className="w-full h-64 object-cover"
+              fill
+              priority
             />
           </div>
         )}
@@ -905,10 +908,12 @@ export function BusinessProfileForm({
           </label>
           {coverPhotoPreview && (
             <div className="mb-4 rounded-xl overflow-hidden relative">
-              <img
+              <Image
                 src={coverPhotoPreview}
                 alt="Cover preview"
                 className="w-full h-64 object-cover"
+                fill
+                priority
               />
               <button
                 type="button"

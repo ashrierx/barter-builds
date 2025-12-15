@@ -70,10 +70,12 @@ export default function BusinessDetailPage() {
       {/* Cover Photo */}
       {business.cover_photo && (
         <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-8">
-          <img
+          <Image
             src={business.cover_photo}
             alt={`${business.business_name} cover photo`}
+            fill
             className="object-cover"
+            priority
           />
         </div>
       )}
@@ -130,7 +132,7 @@ export default function BusinessDetailPage() {
           {/* Offering */}
           <div className="bg-white rounded-2xl border p-6">
             <p className="mb-4">Project Requirements</p>
-            <h2 className="font-semibold mb-3">What They're Offering</h2>
+            <h2 className="font-semibold mb-3">What They&apos;re Offering</h2>
             <div className="bg-slate-100 rounded-xl p-4 text-sm">
               {business.offering}
             </div>
