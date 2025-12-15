@@ -16,45 +16,22 @@ export async function GET() {
       );
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    });
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Get authenticataed user
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // Fetch user's business profile
-    const { data: profile, error } = await supabase
+    const { data, error } = await supabase
       .from("business_profiles")
       .select("*")
-      .eq("user_id", user.id)
-      .single();
+      .order("business_name", { ascending: true });
 
     if (error) {
-      if (error.code === "PGRST116") {
-        return NextResponse.json(
-          { error: "Profile not found" },
-          { status: 404 }
-        );
-      }
-      console.error("Error fetching profile:", error);
+      console.error("Error fetching businesses:", error);
       return NextResponse.json(
-        { error: "Failed to fetch profile" },
+        { error: "Failed to fetch businesses" },
         { status: 500 }
       );
     }
 
-    return NextResponse.json(profile);
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Unexpected error:", error);
     return NextResponse.json(

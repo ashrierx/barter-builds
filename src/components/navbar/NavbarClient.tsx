@@ -69,19 +69,19 @@ export function NavbarClient({ user }: NavbarClientProps) {
             <Link href="/about" className="text-black hover:text-gray-900">
               About
             </Link>
+            <Link href="/businesses" className="text-black hover:text-gray-900">
+              Businesses
+            </Link>
             <Link href="/contact" className="text-black hover:text-gray-900">
               Contact
             </Link>
 
             {user ? (
               <>
-                <Link
-                  href="/businesses"
-                  className="text-black hover:text-gray-900"
+                <div
+                  ref={dropdownRef}
+                  className="w-10 h-10 relative flex items-center rounded-full"
                 >
-                  Businesses
-                </Link>
-                <div ref={dropdownRef} className="w-10 h-10 relative flex items-center rounded-full">
                   {/* User icon with initial */}
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
