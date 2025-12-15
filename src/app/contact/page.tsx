@@ -29,15 +29,15 @@ export default function Contact() {
 
   return (
     <div className="bg-gray-50">
-      <div className="text-center mb-12 p-6 text-gray-500">
-        <h1 className="text-5xl mb-6 ">Contact Us</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+      <div className="text-center mb-12 p-6">
+        <h1 className="text-5xl mb-6 tetx-black">Contact Us</h1>
+        <p className="text-xl text-muted-foreground text-gray-500 max-w-3xl mx-auto">
           Have questions about Barter Builds? Need help with your application?
           We are here to help you navigate the world of skill-based trading.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8 px-12 text-gray-500">
+      <div className="grid lg:grid-cols-3 gap-8 px-12">
         {/* Contact Information */}
         <div className="space-y-6">
           <div className="border rounded-lg p-6 bg-white">
@@ -47,7 +47,7 @@ export default function Contact() {
                 <Mail className="w-5 h-5 text-gray-700 mt-0.5" />
                 <div>
                   <p className="font-medium">Email</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-gray-700">
                     hello@barterbuilds.com
                   </p>
                 </div>
@@ -56,14 +56,14 @@ export default function Contact() {
                 <Phone className="w-5 h-5 text-gray-700 mt-0.5" />
                 <div>
                   <p className="font-medium">Phone</p>
-                  <p className="text-muted-foreground">(555) 123-4567</p>
+                  <p className="text-muted-foreground text-gray-700">(555) 123-4567</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gray-700 mt-0.5" />
                 <div>
                   <p className="font-medium">Address</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-gray-700">
                     123 Innovation Blvd
                     <br />
                     Tech City, CA 94016
@@ -74,7 +74,7 @@ export default function Contact() {
                 <Clock className="w-5 h-5 text-gray-700 mt-0.5" />
                 <div>
                   <p className="font-medium">Business Hours</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-gray-700">
                     Mon-Fri: 9:00 AM - 6:00 PM PST
                     <br />
                     Sat-Sun: 10:00 AM - 4:00 PM PST
@@ -89,19 +89,19 @@ export default function Contact() {
             <div className="space-y-4 text-sm">
               <div>
                 <p className="font-medium">How long does approval take?</p>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-gray-700">
                   Usually 2-3 business days for both businesses and developers.
                 </p>
               </div>
               <div>
                 <p className="font-medium">Is there a fee to join?</p>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-gray-700">
                   No, Barter Builds is completely free to use.
                 </p>
               </div>
               <div>
                 <p className="font-medium">What if a deal goes wrong?</p>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-gray-700">
                   We provide mediation services to help resolve any disputes.
                 </p>
               </div>

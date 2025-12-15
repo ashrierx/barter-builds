@@ -535,7 +535,7 @@ export function BusinessProfileForm({
         setMessage({ type: "success", text: "Profile updated successfully!" });
         setIsEditing(false);
         // Refresh the page to show updated data
-        window.location.reload();
+        // window.location.reload();
       } else {
         setMessage({
           type: "error",
@@ -580,16 +580,22 @@ export function BusinessProfileForm({
     }
   };
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
   const handleCoverPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setCoverPhotoFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCoverPhotoPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      setMessage({
+        type: "error",
+        text: "Cover photo must be under 10MB.",
+      });
+      return;
     }
+
+    setCoverPhotoFile(file);
+    setCoverPhotoPreview(URL.createObjectURL(file));
   };
 
   const toggleRequirement = (req: string) => {
@@ -869,7 +875,7 @@ export function BusinessProfileForm({
 
         <button
           onClick={() => setIsEditing(true)}
-          className="mt-6 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          className="mt-6 btn btn-primary px-6 py-3 rounded-lg font-medium transition-colors"
         >
           Edit Profile
         </button>

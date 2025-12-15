@@ -59,7 +59,7 @@ export default function Businesses() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-16 bg-white">
       <div className="text-center mb-12">
-        <h1 className="text-5xl mb-6 font-bold text-gray-500">
+        <h1 className="text-5xl mb-6 font-bold text-black">
           Businesses Seeking Help
         </h1>
         <p className="text-xl text-gray-500 max-w-3xl mx-auto">
@@ -68,43 +68,48 @@ export default function Businesses() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {businesses.map((business) => (
-          <Link key={business.user_id} href={`/businesses/${business.user_id}`}>
-            <div className="rounded-2xl border border-[#432ad5]/20 bg-white shadow-sm hover:shadow-md transition p-6">
-              <div className="flex justify-between items-start mb-3">
-                <p className="text-xl font-semibold text-slate-900">
-                  {business.business_name}
-                </p>
-              </div>
+          <Link
+            key={business.user_id}
+            href={`/businesses/${business.user_id}`}
+            className="block h-full"
+          >
+            <div className="h-full flex flex-col rounded-2xl border border-[#432ad5]/20 bg-white p-6 shadow-sm transition hover:shadow-md">
+              <div className="flex-1">
+                <div className="flex justify-between items-start mb-3">
+                  <p className="text-xl font-semibold text-slate-900">
+                    {business.business_name}
+                  </p>
+                </div>
 
-              <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4 text-[#432ad5]" />
-                  {business.location}
+                <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-4 h-4 text-[#432ad5]" />
+                    {business.location}
+                  </span>
+                </div>
+
+                <span className="inline-block text-xs px-3 py-1 rounded-full bg-[#432ad5]/10 text-[#432ad5] font-medium mb-4">
+                  {business.business_type}
                 </span>
-              </div>
 
-              <span className="inline-block text-xs px-3 py-1 rounded-full bg-[#432ad5]/10 text-[#432ad5] font-medium mb-4">
-                {business.business_type}
-              </span>
-
-              <p className="text-slate-600 mb-4 leading-relaxed">
-                {business.description}
-              </p>
-
-              <div className="mb-4">
-                <h4 className="font-semibold text-slate-900 mb-2">
-                  Offering in Exchange:
-                </h4>
-                <p className="text-sm rounded-lg text-slate-700">
-                  {business.offering}
+                <p className="text-slate-600 mb-4 leading-relaxed">
+                  {business.description}
                 </p>
+
+                <div className="mb-4">
+                  <h4 className="font-semibold text-slate-900 mb-2">
+                    Offering in Exchange:
+                  </h4>
+                  <p className="text-sm rounded-lg text-slate-700">
+                    {business.offering}
+                  </p>
+                </div>
               </div>
 
-              <button className="w-full flex items-center justify-center gap-2 bg-[#432ad5] text-white py-3 rounded-xl font-medium hover:bg-[#3920cb] transition">
+              <button className="mt-6 w-full flex items-center justify-center gap-2 bg-[#432ad5] text-white py-3 rounded-xl font-medium hover:bg-[#3920cb] transition">
                 <ExternalLink className="w-4 h-4" />
-                {/* Contact {business.business_name} */}
                 View Details
               </button>
             </div>

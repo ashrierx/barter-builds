@@ -66,10 +66,10 @@ export function NavbarClient({ user }: NavbarClientProps) {
 
           {/* Desktop nav links */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/about" className="text-gray-600 hover:text-gray-900">
+            <Link href="/about" className="text-black hover:text-gray-900">
               About
             </Link>
-            <Link href="/contact" className="text-gray-600 hover:text-gray-900">
+            <Link href="/contact" className="text-black hover:text-gray-900">
               Contact
             </Link>
 
@@ -77,7 +77,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
               <>
                 <Link
                   href="/businesses"
-                  className="text-gray-600 hover:text-gray-900"
+                  className="text-black hover:text-gray-900"
                 >
                   Businesses
                 </Link>
@@ -96,7 +96,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
                     <div className="absolute right-4 top-6 mt-2 w-40 bg-white border rounded-md shadow-lg z-20 py-1">
                       <Link
                         href="/dashboard"
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
                         onClick={() => setDropdownOpen(false)}
                       >
                         Dashboard
@@ -107,7 +107,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
                           setDropdownOpen(false);
                         }}
                         disabled={isPending}
-                        className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                        className="w-full text-left px-4 py-2 text-black hover:bg-gray-100 disabled:opacity-50"
                       >
                         {isPending ? "Logging out..." : "Logout"}
                       </button>
