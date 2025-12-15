@@ -133,7 +133,7 @@ export default function About() {
   `;
 
   return (
-    <div className="font-inter bg-white">
+    <div className="font-inter bg-white pb-10">
       {/* Embedded Styles */}
       <style>{customStyles}</style>
 

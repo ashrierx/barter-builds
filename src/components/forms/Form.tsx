@@ -227,7 +227,7 @@ export function DeveloperProfileForm({
       <div>
         <label
           htmlFor="location"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-black mb-1"
         >
           Location
         </label>
@@ -246,7 +246,7 @@ export function DeveloperProfileForm({
       <div>
         <label
           htmlFor="portfolio"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-black mb-1"
         >
           Portfolio URL
         </label>
@@ -265,7 +265,7 @@ export function DeveloperProfileForm({
       <div>
         <label
           htmlFor="github"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-black mb-1"
         >
           GitHub URL
         </label>
@@ -282,7 +282,7 @@ export function DeveloperProfileForm({
       <div>
         <label
           htmlFor="skills"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-black mb-1"
         >
           Skills
         </label>
@@ -302,7 +302,7 @@ export function DeveloperProfileForm({
       <div>
         <label
           htmlFor="experience"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-black mb-1"
         >
           Experience
         </label>
@@ -324,7 +324,7 @@ export function DeveloperProfileForm({
       <div>
         <label
           htmlFor="availability"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-black mb-1"
         >
           Availability
         </label>
@@ -343,7 +343,7 @@ export function DeveloperProfileForm({
       <div>
         <label
           htmlFor="interested_in"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-black mb-1"
         >
           Interested In
         </label>
@@ -377,7 +377,7 @@ export function DeveloperProfileForm({
         <div className="ml-3">
           <label
             htmlFor="is_listed"
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-black"
           >
             Make my profile visible to businesses
           </label>
@@ -682,35 +682,35 @@ export function BusinessProfileForm({
                 <div className="space-y-4">
                   {formData.business_name && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Business Name
                       </label>
-                      <p className="text-gray-900 mt-1">
+                      <p className="text-gray-500 mt-1">
                         {formData.business_name}
                       </p>
                     </div>
                   )}
                   {formData.business_type && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Business Type
                       </label>
-                      <p className="text-gray-900 mt-1">
+                      <p className="text-gray-500 mt-1">
                         {formData.business_type}
                       </p>
                     </div>
                   )}
                   {formData.location && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Location
                       </label>
-                      <p className="text-gray-900 mt-1">{formData.location}</p>
+                      <p className="text-gray-500 mt-1">{formData.location}</p>
                     </div>
                   )}
                   {formData.website && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Website
                       </label>
                       <p className="mt-1">
@@ -718,7 +718,7 @@ export function BusinessProfileForm({
                           href={formData.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-purple-600 hover:text-purple-700 hover:underline"
+                          className="text-[#432ad5] hover:text-purple-700 hover:underline"
                         >
                           {formData.website}
                         </a>
@@ -727,7 +727,7 @@ export function BusinessProfileForm({
                   )}
                   {formData.priority_level && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Priority Level
                       </label>
                       <p className="mt-1">
@@ -759,23 +759,23 @@ export function BusinessProfileForm({
                 <div className="space-y-4">
                   {formData.contact_name && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Contact Name
                       </label>
-                      <p className="text-gray-900 mt-1">
+                      <p className="text-gray-500 mt-1">
                         {formData.contact_name}
                       </p>
                     </div>
                   )}
                   {formData.contact_email && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Contact Email
                       </label>
-                      <p className="text-gray-900 mt-1">
+                      <p className="text-gray-500 mt-1">
                         <a
                           href={`mailto:${formData.contact_email}`}
-                          className="text-purple-600 hover:text-purple-700 hover:underline"
+                          className="text-[#432ad5] hover:text-purple-700 hover:underline"
                         >
                           {formData.contact_email}
                         </a>
@@ -784,10 +784,10 @@ export function BusinessProfileForm({
                   )}
                   {formData.contact_phone && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-black">
                         Contact Phone
                       </label>
-                      <p className="text-gray-900 mt-1">
+                      <p className="text-gray-500 mt-1">
                         {formData.contact_phone}
                       </p>
                     </div>
@@ -800,14 +800,14 @@ export function BusinessProfileForm({
             <div className="space-y-6">
               {formData.requirements.length > 0 && (
                 <div>
-                  <label className="text-sm font-medium text-gray-500 mb-2 block">
+                  <label className="text-sm font-medium text-black mb-2 block">
                     Requirements
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {formData.requirements.map((req) => (
                       <span
                         key={req}
-                        className="inline-block px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm"
+                        className="inline-block px-3 py-1 bg-[#432ad5] text-purple-50 rounded-full text-sm"
                       >
                         {req}
                       </span>
@@ -818,7 +818,7 @@ export function BusinessProfileForm({
 
               {formData.planned_pages.length > 0 && (
                 <div>
-                  <label className="text-sm font-medium text-gray-500 mb-2 block">
+                  <label className="text-sm font-medium text-black mb-2 block">
                     Planned Pages
                   </label>
                   <div className="flex flex-wrap gap-2">
@@ -840,20 +840,20 @@ export function BusinessProfileForm({
           <div className="space-y-6 border-t pt-6">
             {formData.description && (
               <div>
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-sm font-medium text-blackmb-2 block">
                   Business Description
                 </label>
-                <p className="text-gray-900 leading-relaxed whitespace-pre-wrap">
+                <p className="text-gray-500 leading-relaxed whitespace-pre-wrap">
                   {formData.description}
                 </p>
               </div>
             )}
             {formData.offering && (
               <div>
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-sm font-medium text-black mb-2 block">
                   What We Offer
                 </label>
-                <p className="text-gray-900 leading-relaxed whitespace-pre-wrap">
+                <p className="text-gray-500 leading-relaxed whitespace-pre-wrap">
                   {formData.offering}
                 </p>
               </div>
@@ -862,10 +862,10 @@ export function BusinessProfileForm({
 
           {/* Visibility Status */}
           <div className="mt-6 pt-6 border-t">
-            <label className="text-sm font-medium text-gray-500 mb-2 block">
+            <label className="text-sm font-medium text-black mb-2 block">
               Profile Visibility
             </label>
-            <p className="text-gray-900">
+            <p className="text-gray-500">
               {formData.is_listed
                 ? "✓ Public (Visible to developers)"
                 : "✗ Private (Hidden from developers)"}
@@ -944,7 +944,7 @@ export function BusinessProfileForm({
             <div>
               <label
                 htmlFor="business_name"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Business Name *
               </label>
@@ -953,7 +953,7 @@ export function BusinessProfileForm({
                 id="business_name"
                 value={formData.business_name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Your business name"
                 required
               />
@@ -962,7 +962,7 @@ export function BusinessProfileForm({
             <div>
               <label
                 htmlFor="business_type"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Business Type *
               </label>
@@ -971,7 +971,7 @@ export function BusinessProfileForm({
                 id="business_type"
                 value={formData.business_type}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="e.g., Technology, Healthcare, Finance"
                 required
               />
@@ -980,7 +980,7 @@ export function BusinessProfileForm({
             <div>
               <label
                 htmlFor="location"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Location *
               </label>
@@ -989,7 +989,7 @@ export function BusinessProfileForm({
                 id="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="e.g., New York, NY or Remote-First"
                 required
               />
@@ -998,7 +998,7 @@ export function BusinessProfileForm({
             <div>
               <label
                 htmlFor="website"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Website
               </label>
@@ -1007,13 +1007,13 @@ export function BusinessProfileForm({
                 id="website"
                 value={formData.website}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="https://yourcompany.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-black mb-2">
                 Priority Level *
               </label>
               <div className="space-y-2">
@@ -1034,7 +1034,7 @@ export function BusinessProfileForm({
                         })
                       }
                     />
-                    <span className="ml-3 text-gray-700 capitalize">
+                    <span className="ml-3 text-gray-500 capitalize">
                       {level}
                     </span>
                   </label>
@@ -1045,14 +1045,14 @@ export function BusinessProfileForm({
 
           {/* Right Column - Contact Information */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-black">
               Contact Information
             </h3>
 
             <div>
               <label
                 htmlFor="contact_name"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Contact Name
               </label>
@@ -1061,7 +1061,7 @@ export function BusinessProfileForm({
                 id="contact_name"
                 value={formData.contact_name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Primary contact person"
               />
             </div>
@@ -1069,7 +1069,7 @@ export function BusinessProfileForm({
             <div>
               <label
                 htmlFor="contact_email"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Contact Email
               </label>
@@ -1078,7 +1078,7 @@ export function BusinessProfileForm({
                 id="contact_email"
                 value={formData.contact_email}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="contact@yourcompany.com"
               />
             </div>
@@ -1086,7 +1086,7 @@ export function BusinessProfileForm({
             <div>
               <label
                 htmlFor="contact_phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Contact Phone
               </label>
@@ -1095,7 +1095,7 @@ export function BusinessProfileForm({
                 id="contact_phone"
                 value={formData.contact_phone}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="(555) 123-4567"
               />
             </div>
@@ -1103,7 +1103,7 @@ export function BusinessProfileForm({
             <div>
               <label
                 htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-black mb-1"
               >
                 Business Phone
               </label>
@@ -1112,7 +1112,7 @@ export function BusinessProfileForm({
                 id="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="(555) 123-4567"
               />
             </div>
@@ -1121,7 +1121,7 @@ export function BusinessProfileForm({
 
         {/* Requirements */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-black mb-2">
             Requirements
           </label>
           <div className="flex flex-wrap gap-2 mb-3">
@@ -1132,7 +1132,7 @@ export function BusinessProfileForm({
                 onClick={() => toggleRequirement(req)}
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   formData.requirements.includes(req)
-                    ? "bg-purple-600 text-white"
+                    ? "bg-[#432ad5] text-purple-50"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -1149,7 +1149,7 @@ export function BusinessProfileForm({
                 {formData.requirements.map((req) => (
                   <span
                     key={req}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm"
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-purple-50 text-[#432ad5] rounded-full text-sm"
                   >
                     {req}
                     <button
@@ -1260,7 +1260,7 @@ export function BusinessProfileForm({
         <div className="mb-6">
           <label
             htmlFor="description"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-black mb-1"
           >
             Business Description *
           </label>
@@ -1269,7 +1269,7 @@ export function BusinessProfileForm({
             value={formData.description}
             onChange={handleChange}
             rows={5}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             placeholder="Tell us about your business, your mission, and what you're looking for"
             required
           />
@@ -1279,7 +1279,7 @@ export function BusinessProfileForm({
         <div className="mb-6">
           <label
             htmlFor="offering"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-black mb-1"
           >
             What We Offer *
           </label>
@@ -1288,7 +1288,7 @@ export function BusinessProfileForm({
             value={formData.offering}
             onChange={handleChange}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             placeholder="Describe what services, products, or opportunities you offer"
             required
           />
@@ -1310,7 +1310,7 @@ export function BusinessProfileForm({
           <div className="ml-3">
             <label
               htmlFor="is_listed"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-black"
             >
               Make my profile visible to developers
             </label>
@@ -1325,7 +1325,7 @@ export function BusinessProfileForm({
           <button
             type="submit"
             disabled={isSaving}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="btn btn-primary text-white px-6 py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSaving ? "Saving..." : "Save Profile"}
           </button>
@@ -1334,7 +1334,7 @@ export function BusinessProfileForm({
               type="button"
               onClick={handleCancel}
               disabled={isSaving}
-              className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 disabled:opacity-50 transition-colors font-medium"
+              className="bg-gray-200 text-gray-700 px-6 rounded-lg hover:bg-gray-300 disabled:opacity-50 transition-colors font-medium"
             >
               Cancel
             </button>

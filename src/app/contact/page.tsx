@@ -28,7 +28,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-50 pb-10"> 
       <div className="text-center mb-12 p-6">
         <h1 className="text-5xl mb-6 tetx-black">Contact Us</h1>
         <p className="text-xl text-muted-foreground text-gray-500 max-w-3xl mx-auto">

@@ -3,7 +3,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock, Globe, Mail, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  Globe,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
 
 type BusinessProfile = {
   user_id: string;
@@ -12,6 +21,7 @@ type BusinessProfile = {
   location: string;
   description: string;
   offering: string;
+  cover_photo?: string;
   priority_level?: "low" | "medium" | "high" | "critical";
   contact_name?: string;
   contact_phone?: string;
@@ -56,6 +66,18 @@ export default function BusinessDetailPage() {
           Back to Businesses
         </button>
       </Link>
+
+      {/* Cover Photo */}
+      {business.cover_photo && (
+        <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-8">
+          <img
+            src={business.cover_photo}
+            alt={`${business.business_name} cover photo`}
+            className="object-cover"
+          />
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* LEFT COLUMN */}
         <div className="lg:col-span-2 space-y-6">
@@ -108,7 +130,7 @@ export default function BusinessDetailPage() {
           {/* Offering */}
           <div className="bg-white rounded-2xl border p-6">
             <p className="mb-4">Project Requirements</p>
-            <h2 className="font-semibold mb-3">What They’re Offering</h2>
+            <h2 className="font-semibold mb-3">What They're Offering</h2>
             <div className="bg-slate-100 rounded-xl p-4 text-sm">
               {business.offering}
             </div>
@@ -179,28 +201,28 @@ export default function BusinessDetailPage() {
                   <div className="flex items-center gap-1">
                     <Phone className="w-4" />
                     <span>
-                  <a
-                    href={`tel:${business.contact_phone}`}
-                    className="block hover:underline"
-                  >
-                    {business.contact_phone}
+                      <a
+                        href={`tel:${business.contact_phone}`}
+                        className="block hover:underline"
+                      >
+                        {business.contact_phone}
                       </a>
-                      </span>
-                    </div>
+                    </span>
+                  </div>
                 )}
                 {business.website && (
                   <div className="flex items-center gap-1">
                     <Globe className="w-4" />
                     <span>
-                  <a
-                    href={business.website}
-                    target="_blank"
-                    className="block hover:underline"
-                  >
-                    Current Website
+                      <a
+                        href={business.website}
+                        target="_blank"
+                        className="block hover:underline"
+                      >
+                        Current Website
                       </a>
-                      </span>
-                    </div>
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
