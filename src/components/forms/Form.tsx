@@ -797,7 +797,7 @@ export function BusinessProfileForm({
                   The Mission
                 </h3>
                 <p className="text-slate-700 leading-relaxed bg-slate-50 p-6 rounded-[2rem] italic font-medium">
-                &quot;{formData.description}&quot;
+                  &quot;{formData.description}&quot;
                 </p>
               </div>
               <div className="space-y-3">
@@ -870,6 +870,7 @@ export function BusinessProfileForm({
 
         {/* Inputs Grid */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* LEFT COLUMN: General Info */}
           <div className="space-y-6">
             <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
               General Info
@@ -909,7 +910,8 @@ export function BusinessProfileForm({
             ))}
           </div>
 
-          <div className="space-y-6">
+          {/* RIGHT COLUMN: Urgency & Contact */}
+          <div className="space-y-6 border-l border-slate-100 pl-8">
             <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
               Urgency
             </h4>
@@ -937,9 +939,45 @@ export function BusinessProfileForm({
                 </label>
               ))}
             </div>
+
+            {/* CONTACT DETAILS SUB-SECTION */}
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest pt-4">
+              Contact Details
+            </h4>
+            {[
+              {
+                id: "contact_name",
+                label: "Contact Person",
+                placeholder: "Jane Doe",
+              },
+              {
+                id: "contact_email",
+                label: "Contact Email",
+                placeholder: "jane@example.com",
+              },
+              {
+                id: "contact_phone",
+                label: "Contact Phone",
+                placeholder: "(555) 000-0000",
+              },
+            ].map((field) => (
+              <div key={field.id} className="space-y-2">
+                <label className="text-xs font-bold text-slate-500 ml-1">
+                  {field.label}
+                </label>
+                <input
+                  type={field.id === "contact_email" ? "email" : "text"}
+                  id={field.id}
+                  value={formData[field.id as keyof typeof formData] as string}
+                  onChange={handleChange}
+                  className="w-full text-gray-500 bg-slate-50 border-none rounded-2xl px-5 py-3 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+                  placeholder={field.placeholder}
+                  required
+                />
+              </div>
+            ))}
           </div>
         </div>
-
         {/* Dynamic Tag Selection */}
         <div className="space-y-8 mb-12">
           <div className="space-y-4">
