@@ -215,8 +215,29 @@ export function NavbarClient({ user }: NavbarClientProps) {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
-          <Link
+        <div
+          className={`md:hidden px-2 pt-2 pb-3 space-y-1 border-t border-gray-200 bg-slate-50 ${
+            useSlateText
+              ? "bg-white/80 backdrop-blur-md border-b border-slate-100"
+              : "bg-slate-50"
+          }`}
+        >
+          {/* className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        useSlateText
+          ? "bg-white/80 backdrop-blur-md border-b border-slate-100"
+          : "bg-transparent"
+      }`} */}
+          {["About", "Businesses", "Contact"].map((item) => (
+            <Link
+              key={item}
+              href={`/${item.toLowerCase()}`}
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item}
+            </Link>
+          ))}
+          {/* <Link
             href="/about"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
             onClick={() => setMobileMenuOpen(false)}
@@ -229,7 +250,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
             onClick={() => setMobileMenuOpen(false)}
           >
             Contact
-          </Link>
+          </Link> */}
 
           {user ? (
             <>
