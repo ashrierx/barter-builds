@@ -5,6 +5,7 @@ import { LoginModal } from "@/components/auth/LoginModal";
 import { SignupModal } from "@/components/auth/SignupModal";
 import { logoutAction } from "@/app/auth/actions";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type User = {
   id: string;
@@ -53,76 +54,112 @@ export function NavbarClient({ user }: NavbarClientProps) {
 
   // Get first initial from user's first name or business name
   const userInitial = user?.name ? user.name[0].toUpperCase() : "";
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  const isTargetPage =
+    pathname.startsWith("/dashboard/business") ||
+    pathname.startsWith("/dashboard/developer") ||
+    (pathname.startsWith("/businesses/") && pathname !== "/businesses");
+
+  const useSlateText = isScrolled || isTargetPage;
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        useSlateText
+          ? "bg-white/80 backdrop-blur-md border-b border-slate-100"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              Barter Builds
+          <div className="flex items-center text-white">
+            <Link
+              href="/"
+              className={`transition-colors duration-300 font-medium ${
+                useSlateText ? "text-slate-600" : "text-white"
+              } hover:text-[#432ad5]`}
+            >
+              B<span className="text-[rgb(120,100,255)]">B</span>
+              <span className="ml-2 text-lg font-bold tracking-tight hidden sm:inline-block">
+                BarterBuilds
+              </span>
             </Link>
           </div>
 
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link href="/about" className="text-black hover:text-gray-900">
-              About
-            </Link>
-            <Link href="/businesses" className="text-black hover:text-gray-900">
-              Businesses
-            </Link>
-            <Link href="/contact" className="text-black hover:text-gray-900">
-              Contact
-            </Link>
+          {/* Desktop nav links - Refined Typography */}
+          <div className="hidden md:flex items-center space-x-8  text-white">
+            {["About", "Businesses", "Contact"].map((item) => (
+              <Link
+                key={item}
+                href={`/${item.toLowerCase()}`}
+                className={`transition-colors duration-300 font-medium ${
+                  useSlateText ? "text-slate-600" : "text-white"
+                } hover:text-[#432ad5]`}
+              >
+                {item}
+              </Link>
+            ))}
 
             {user ? (
-              <>
-                <div
-                  ref={dropdownRef}
-                  className="w-10 h-10 relative flex items-center rounded-full"
+              <div className="relative ml-4" ref={dropdownRef}>
+                {/* User Profile Button - Perfect Circle */}
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-[rgb(67,42,213)] text-white font-bold text-sm shadow-md hover:scale-105 transition-transform focus:outline-none border-2 border-white/10"
+                  aria-label="User menu"
                 >
-                  {/* User icon with initial */}
-                  <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="btn btn-primary text-white flex items-center justify-center font-semibold focus:outline-none w-10"
-                    aria-label="User menu"
-                  >
-                    {userInitial}
-                  </button>
+                  {userInitial}
+                </button>
 
-                  {/* Dropdown */}
-                  {dropdownOpen && (
-                    <div className="absolute right-4 top-6 mt-2 w-40 bg-white border rounded-md shadow-lg z-20 py-1">
-                      <Link
-                        href="/dashboard"
-                        className="block px-4 py-2 text-black hover:bg-gray-100"
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        Dashboard
-                      </Link>
-                      <button
-                        onClick={() => {
-                          handleLogout();
-                          setDropdownOpen(false);
-                        }}
-                        disabled={isPending}
-                        className="w-full text-left px-4 py-2 text-black hover:bg-gray-100 disabled:opacity-50"
-                      >
-                        {isPending ? "Logging out..." : "Logout"}
-                      </button>
+                {/* Modern Dropdown - Aligned to right-0 to prevent screen cutoff */}
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-3 w-48 bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-xl border border-slate-100 dark:border-white/5 py-2 z-50 overflow-hidden ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+                    <div className="px-4 py-2 border-b border-slate-50 dark:border-white/5 mb-1">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                        Account
+                      </p>
+                      <p className="text-sm font-medium text-slate-900 dark:text-white truncate">
+                        {user.name}
+                      </p>
                     </div>
-                  )}
-                </div>
-              </>
+
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center px-4 py-3 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setDropdownOpen(false);
+                      }}
+                      disabled={isPending}
+                      className="w-full text-left flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors disabled:opacity-50"
+                    >
+                      {isPending ? "Logging out..." : "Logout"}
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
-              <>
+              <div className="flex items-center gap-6 pl-4 border-l border-white/10">
                 <button
                   onClick={() => {
                     setAuthMode("signup");
                     setShowAuthModal(true);
                   }}
-                  className="text-gray-600 hover:text-gray-900"
+                  className="text-sm font-semibold text-white hover:opacity-70 transition-opacity"
                 >
                   Sign Up
                 </button>
@@ -131,11 +168,11 @@ export function NavbarClient({ user }: NavbarClientProps) {
                     setAuthMode("login");
                     setShowAuthModal(true);
                   }}
-                  className="btn btn-primary"
+                  className="px-5 py-2 bg-white text-black text-sm font-bold rounded-full hover:bg-gray-200 transition-all"
                 >
                   Sign In
                 </button>
-              </>
+              </div>
             )}
           </div>
 

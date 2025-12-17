@@ -57,58 +57,70 @@ export default function Businesses() {
   // };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16 bg-white">
-      <div className="text-center mb-12">
-        <h1 className="text-5xl mb-6 font-bold text-black">
-          Businesses Seeking Help
-        </h1>
-        <p className="text-xl text-gray-500 max-w-3xl mx-auto">
-          Browse local businesses that need websites and discover what valuable
-          goods and services they are offering in exchange.
-        </p>
+    <div className="bg-[#f8fafc] min-h-screen pb-20">
+      <div className="bg-[#0a0a0a] text-white py-32 px-6 mb-12 relative overflow-hidden">
+        {/* Multi-layered Glow */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#432ad5]/30 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-[#7864ff]/10 blur-[100px] rounded-full" />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto text-center">
+          <span className="inline-block px-4 py-1 mb-6 text-xs font-bold tracking-[0.3em] uppercase bg-white/5 border border-white/10 rounded-full backdrop-blur-sm text-[#7864ff]">
+            Open Opportunities
+          </span>
+
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
+            Businesses <br />
+            <span className="bg-gradient-to-r from-[#7864ff] to-[#bca6ff] bg-clip-text text-transparent">
+              Seeking Help.
+            </span>
+          </h1>
+
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+            Browse local businesses that need websites and discover what
+            valuable goods and services they are offering in exchange.
+          </p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 m-8">
         {businesses.map((business) => (
           <Link
             key={business.user_id}
             href={`/businesses/${business.user_id}`}
             className="block h-full"
           >
-            <div className="h-full flex flex-col rounded-2xl border border-[#432ad5]/20 bg-white p-6 shadow-sm transition hover:shadow-md">
-              <div className="flex-1">
-                <div className="flex justify-between items-start mb-3">
-                  <p className="text-xl font-semibold text-slate-900">
-                    {business.business_name}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4 text-[#432ad5]" />
-                    {business.location}
+            <div className="group relative h-full flex flex-col rounded-3xl border border-slate-100 bg-white overflow-hidden transition-all hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
+              <div className="h-2 w-full bg-[rgb(67,42,213)]" />
+              <div className="p-8 flex flex-col flex-1">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-xs font-bold tracking-widest uppercase text-slate-400">
+                    {business.business_type}
                   </span>
+                  <div className="flex items-center text-xs font-medium text-slate-500">
+                    <MapPin className="w-3 h-3 mr-1" /> {business.location}
+                  </div>
                 </div>
 
-                <span className="inline-block text-xs px-3 py-1 rounded-full bg-[#432ad5]/10 text-[#432ad5] font-medium mb-4">
-                  {business.business_type}
-                </span>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-[rgb(67,42,213)] transition-colors">
+                  {business.business_name}
+                </h3>
 
-                <p className="text-slate-600 mb-4 leading-relaxed">
+                <p className="text-slate-500 line-clamp-3 mb-6 text-sm leading-relaxed">
                   {business.description}
                 </p>
 
-                <div className="mb-4">
-                  <h4 className="font-semibold text-slate-900 mb-2">
-                    Offering in Exchange:
-                  </h4>
-                  <p className="text-sm rounded-lg text-slate-700">
+                <div className="mt-auto pt-6 border-t border-slate-50">
+                  <p className="text-xs font-semibold text-slate-400 uppercase mb-2">
+                    The Trade
+                  </p>
+                  <p className="text-sm font-medium text-slate-800">
                     {business.offering}
                   </p>
                 </div>
               </div>
-
-              <button className="mt-6 w-full flex items-center justify-center gap-2 bg-[#432ad5] text-white py-3 rounded-xl font-medium hover:bg-[#3920cb] transition">
+              <button className="m-4 flex items-center justify-center gap-2 bg-[#432ad5] text-white py-3 rounded-xl font-medium hover:bg-[#3920cb] transition shadow-md active:scale-95">
                 <ExternalLink className="w-4 h-4" />
                 View Details
               </button>

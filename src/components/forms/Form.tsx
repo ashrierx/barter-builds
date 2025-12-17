@@ -6,7 +6,20 @@ import {
   updateDeveloperProfile,
   updateBusinessProfile,
 } from "@/app/auth/actions";
-import { X } from "lucide-react";
+import {
+  AlertCircle,
+  Building2,
+  Calendar,
+  Camera,
+  Github,
+  Globe,
+  Heart,
+  MapPin,
+  ShieldAlert,
+  ShieldCheck,
+  X,
+  Zap,
+} from "lucide-react";
 import Image from "next/image";
 
 // ============================================================================
@@ -123,86 +136,115 @@ export function DeveloperProfileForm({
   // View Mode
   if (!isEditing && initialProfile) {
     return (
-      <div>
-        <div className="space-y-4 mb-6">
-          {formData.location && (
-            <div>
-              <strong className="text-gray-700">Location:</strong>
-              <p className="text-gray-600 mt-1">{formData.location}</p>
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        {/* Profile Header Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-center gap-4">
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-[#432ad5] shadow-sm">
+              <MapPin className="w-5 h-5" />
             </div>
-          )}
-          {formData.portfolio && (
             <div>
-              <strong className="text-gray-700">Portfolio:</strong>
-              <p className="text-gray-600 mt-1">
-                <a
-                  href={formData.portfolio}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  {formData.portfolio}
-                </a>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                Location
+              </p>
+              <p className="text-sm font-semibold text-slate-900">
+                {formData.location || "Not specified"}
               </p>
             </div>
-          )}
-          {formData.github && (
+          </div>
+          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-center gap-4">
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-[#432ad5] shadow-sm">
+              <Calendar className="w-5 h-5" />
+            </div>
             <div>
-              <strong className="text-gray-700">GitHub:</strong>
-              <p className="text-gray-600 mt-1">
-                <a
-                  href={formData.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  {formData.github}
-                </a>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                Availability
+              </p>
+              <p className="text-sm font-semibold text-slate-900">
+                {formData.availability || "Not specified"}
               </p>
             </div>
-          )}
-          {formData.skills && (
-            <div>
-              <strong className="text-gray-700">Skills:</strong>
-              <p className="text-gray-600 mt-1 whitespace-pre-wrap">
-                {formData.skills}
-              </p>
-            </div>
-          )}
-          {formData.experience && (
-            <div>
-              <strong className="text-gray-700">Experience:</strong>
-              <p className="text-gray-600 mt-1 whitespace-pre-wrap">
-                {formData.experience}
-              </p>
-            </div>
-          )}
-          {formData.availability && (
-            <div>
-              <strong className="text-gray-700">Availability:</strong>
-              <p className="text-gray-600 mt-1">{formData.availability}</p>
-            </div>
-          )}
-          {formData.interested_in && (
-            <div>
-              <strong className="text-gray-700">Interested In:</strong>
-              <p className="text-gray-600 mt-1 whitespace-pre-wrap">
-                {formData.interested_in}
-              </p>
-            </div>
-          )}
-          <div>
-            <strong className="text-gray-700">Profile Visibility:</strong>
-            <p className="text-gray-600 mt-1">
-              {formData.is_listed
-                ? "✓ Public (Visible to businesses)"
-                : "✗ Private (Hidden from businesses)"}
-            </p>
           </div>
         </div>
+
+        {/* Main Content Sections */}
+        <div className="space-y-6">
+          {[
+            {
+              icon: Globe,
+              label: "Portfolio",
+              value: formData.portfolio,
+              isLink: true,
+            },
+            {
+              icon: Github,
+              label: "GitHub",
+              value: formData.github,
+              isLink: true,
+            },
+            { icon: Zap, label: "Technical Skills", value: formData.skills },
+            {
+              icon: ShieldCheck,
+              label: "Experience",
+              value: formData.experience,
+            },
+            {
+              icon: Heart,
+              label: "Interested In",
+              value: formData.interested_in,
+            },
+          ].map(
+            (item, i) =>
+              item.value && (
+                <div key={i} className="group transition-all">
+                  <div className="flex items-center gap-2 mb-2">
+                    <item.icon className="w-4 h-4 text-slate-400" />
+                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                      {item.label}
+                    </h3>
+                  </div>
+                  {item.isLink ? (
+                    <a
+                      href={item.value}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#432ad5] font-medium hover:underline break-all"
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    <p className="text-slate-700 leading-relaxed whitespace-pre-wrap bg-white border border-slate-100 p-4 rounded-2xl shadow-sm italic">
+                      &quot;{item.value}&quot;
+                    </p>
+                  )}
+                </div>
+              )
+          )}
+        </div>
+
+        {/* Visibility Status */}
+        <div
+          className={`p-4 rounded-2xl border flex items-center gap-3 ${
+            formData.is_listed
+              ? "bg-green-50 border-green-100 text-green-700"
+              : "bg-slate-100 border-slate-200 text-slate-500"
+          }`}
+        >
+          {formData.is_listed ? (
+            <ShieldCheck className="w-5 h-5" />
+          ) : (
+            <ShieldAlert className="w-5 h-5" />
+          )}
+          <span className="text-sm font-bold uppercase tracking-tight">
+            {formData.is_listed
+              ? "Public Profile - Visible to Businesses"
+              : "Private Profile - Hidden from Directory"}
+          </span>
+        </div>
+
         <button
           onClick={() => setIsEditing(true)}
-          className="btn btn-primary text-white px-4 py-2 rounded-md  transition-colors"
+          className="w-full btn-primary"
         >
           Edit Profile
         </button>
@@ -212,187 +254,139 @@ export function DeveloperProfileForm({
 
   // Edit Mode
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-8 animate-in fade-in duration-500"
+    >
       {message && (
         <div
-          className={`p-4 rounded-md ${
+          className={`p-4 rounded-2xl text-sm font-bold flex items-center gap-3 ${
             message.type === "success"
-              ? "bg-green-50 text-green-800 border border-green-200"
-              : "bg-red-50 text-red-800 border border-red-200"
+              ? "bg-green-50 text-green-700 border border-green-200"
+              : "bg-red-50 text-red-700 border border-red-200"
           }`}
         >
           {message.text}
         </div>
       )}
 
-      <div>
-        <label
-          htmlFor="location"
-          className="block text-sm font-medium text-black mb-1"
-        >
-          Location
-        </label>
-        <input
-          type="text"
-          id="location"
-          value={formData.location}
-          onChange={(e) =>
-            setFormData({ ...formData, location: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="e.g., San Francisco, CA or Remote"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="portfolio"
-          className="block text-sm font-medium text-black mb-1"
-        >
-          Portfolio URL
-        </label>
-        <input
-          type="url"
-          id="portfolio"
-          value={formData.portfolio}
-          onChange={(e) =>
-            setFormData({ ...formData, portfolio: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="https://yourportfolio.com"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="github"
-          className="block text-sm font-medium text-black mb-1"
-        >
-          GitHub URL
-        </label>
-        <input
-          type="url"
-          id="github"
-          value={formData.github}
-          onChange={(e) => setFormData({ ...formData, github: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="https://github.com/yourusername"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="skills"
-          className="block text-sm font-medium text-black mb-1"
-        >
-          Skills
-        </label>
-        <textarea
-          id="skills"
-          value={formData.skills}
-          onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="e.g., React, Node.js, TypeScript, PostgreSQL, AWS"
-        />
-        <p className="mt-1 text-sm text-gray-500">
-          List your technical skills and expertise
-        </p>
-      </div>
-
-      <div>
-        <label
-          htmlFor="experience"
-          className="block text-sm font-medium text-black mb-1"
-        >
-          Experience
-        </label>
-        <textarea
-          id="experience"
-          value={formData.experience}
-          onChange={(e) =>
-            setFormData({ ...formData, experience: e.target.value })
-          }
-          rows={5}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Describe your work experience, notable projects, and achievements"
-        />
-        <p className="mt-1 text-sm text-gray-500">
-          Share your professional background and key accomplishments
-        </p>
-      </div>
-
-      <div>
-        <label
-          htmlFor="availability"
-          className="block text-sm font-medium text-black mb-1"
-        >
-          Availability
-        </label>
-        <input
-          type="text"
-          id="availability"
-          value={formData.availability}
-          onChange={(e) =>
-            setFormData({ ...formData, availability: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="e.g., Available immediately, Part-time (20hrs/week), Weekends only"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="interested_in"
-          className="block text-sm font-medium text-black mb-1"
-        >
-          Interested In
-        </label>
-        <textarea
-          id="interested_in"
-          value={formData.interested_in}
-          onChange={(e) =>
-            setFormData({ ...formData, interested_in: e.target.value })
-          }
-          rows={4}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="What types of projects or collaborations are you interested in?"
-        />
-        <p className="mt-1 text-sm text-gray-500">
-          Describe the kind of work or partnerships you&apos;re seeking
-        </p>
-      </div>
-
-      <div className="flex items-start">
-        <div className="flex items-center h-5">
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="text-xs font-bold text-slate-500 uppercase ml-1">
+            Location
+          </label>
           <input
-            type="checkbox"
-            id="is_listed"
-            checked={formData.is_listed}
+            type="text"
+            value={formData.location}
             onChange={(e) =>
-              setFormData({ ...formData, is_listed: e.target.checked })
+              setFormData({ ...formData, location: e.target.value })
             }
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="w-full text-gray-500 bg-slate-50 border-none rounded-2xl px-5 py-3 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+            placeholder="San Francisco, CA or Remote"
           />
         </div>
-        <div className="ml-3">
-          <label
-            htmlFor="is_listed"
-            className="text-sm font-medium text-black"
-          >
-            Make my profile visible to businesses
+        <div className="space-y-2">
+          <label className="text-xs font-bold text-slate-500 uppercase ml-1">
+            Availability
           </label>
-          <p className="text-sm text-gray-500">
-            Allow businesses to discover and contact you for opportunities
-          </p>
+          <input
+            type="text"
+            value={formData.availability}
+            onChange={(e) =>
+              setFormData({ ...formData, availability: e.target.value })
+            }
+            className="w-full text-gray-500 bg-slate-50 border-none rounded-2xl px-5 py-3 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+            placeholder="e.g. 20hrs/week"
+          />
         </div>
       </div>
 
-      <div className="flex gap-3 pt-4 border-t">
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-slate-500 uppercase ml-1">
+          Portfolio & GitHub
+        </label>
+        <div className="space-y-3">
+          <input
+            type="url"
+            value={formData.portfolio}
+            onChange={(e) =>
+              setFormData({ ...formData, portfolio: e.target.value })
+            }
+            className="w-full text-gray-500 bg-slate-50 border-none rounded-2xl px-5 py-3 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+            placeholder="https://portfolio.com"
+          />
+          <input
+            type="url"
+            value={formData.github}
+            onChange={(e) =>
+              setFormData({ ...formData, github: e.target.value })
+            }
+            className="w-full text-gray-500 bg-slate-50 border-none rounded-2xl px-5 py-3 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+            placeholder="https://github.com/user"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        {[
+          {
+            id: "skills",
+            label: "Technical Skills",
+            placeholder: "React, Node.js, etc.",
+            rows: 3,
+          },
+          {
+            id: "experience",
+            label: "Work Background",
+            placeholder: "Notable projects...",
+            rows: 5,
+          },
+          {
+            id: "interested_in",
+            label: "What kind of barters interest you?",
+            placeholder: "I am looking for...",
+            rows: 4,
+          },
+        ].map((field) => (
+          <div key={field.id} className="space-y-2">
+            <label className="text-xs font-bold text-slate-500 uppercase ml-1">
+              {field.label}
+            </label>
+            <textarea
+              value={formData[field.id as keyof typeof formData] as string}
+              onChange={(e) =>
+                setFormData({ ...formData, [field.id]: e.target.value })
+              }
+              rows={field.rows}
+              className="w-full text-gray-500 bg-slate-50 border-none rounded-2xl px-5 py-4 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+              placeholder={field.placeholder}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="py-3 px-6 bg-[#432ad5]/5 rounded-3xl border border-[#432ad5]/10 flex items-center justify-between">
+        <div className="space-y-1">
+          <p className="text-sm font-bold text-slate-900">Profile Visibility</p>
+          <p className="text-xs text-slate-500">
+            Allow businesses to find you in the directory.
+          </p>
+        </div>
+        <input
+          type="checkbox"
+          checked={formData.is_listed}
+          onChange={(e) =>
+            setFormData({ ...formData, is_listed: e.target.checked })
+          }
+          className="w-6 h-6 rounded-lg border-slate-300 text-[#432ad5] focus:ring-[#432ad5]"
+        />
+      </div>
+
+      <div className="flex gap-4 pt-4">
         <button
           type="submit"
           disabled={isSaving}
-          className="btn btn-primary text-white px-6 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 btn-primary py-4"
         >
           {isSaving ? "Saving..." : "Save Profile"}
         </button>
@@ -400,8 +394,7 @@ export function DeveloperProfileForm({
           <button
             type="button"
             onClick={handleCancel}
-            disabled={isSaving}
-            className="bg-gray-200 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 transition-colors"
+            className="px-8 py-4 rounded-2xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition-all"
           >
             Cancel
           </button>
@@ -657,557 +650,336 @@ export function BusinessProfileForm({
     }));
   };
 
-  // View Mode (Your existing, correct View Mode is kept as is)
+  // View Mode
   if (!isEditing && initialProfile) {
     return (
-      <div className="max-w-5xl mx-auto">
-        {/* Cover Photo */}
+      <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        {/* Premium Cover Photo */}
         {coverPhotoPreview && (
-          <div className="mb-8 rounded-xl overflow-hidden">
+          <div className="relative w-full h-80 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#432ad5]/10 border border-slate-100">
             <Image
               src={coverPhotoPreview}
               alt="Business cover"
-              className="w-full h-64 object-cover"
               fill
+              className="object-cover"
               priority
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute bottom-8 left-8">
+              <h2 className="text-3xl font-black text-white tracking-tighter drop-shadow-md">
+                {formData.business_name}
+              </h2>
+            </div>
           </div>
         )}
 
-        <div className="bg-white rounded-xl border border-gray-200 p-8">
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {/* Left Column - Business Info */}
-            <div className="space-y-6">
+        <div className="bg-white rounded-[2.5rem] border border-slate-100 p-10 shadow-xl shadow-slate-200/50">
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* Left: Business Identity */}
+            <div className="space-y-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Business Information
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">
+                  Business Identity
                 </h3>
-                <div className="space-y-4">
-                  {formData.business_name && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Business Name
-                      </label>
-                      <p className="text-gray-500 mt-1">
-                        {formData.business_name}
-                      </p>
-                    </div>
-                  )}
-                  {formData.business_type && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Business Type
-                      </label>
-                      <p className="text-gray-500 mt-1">
-                        {formData.business_type}
-                      </p>
-                    </div>
-                  )}
-                  {formData.location && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Location
-                      </label>
-                      <p className="text-gray-500 mt-1">{formData.location}</p>
-                    </div>
-                  )}
-                  {formData.website && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Website
-                      </label>
-                      <p className="mt-1">
-                        <a
-                          href={formData.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#432ad5] hover:text-purple-700 hover:underline"
+                <div className="grid grid-cols-1 gap-4">
+                  {[
+                    {
+                      icon: Building2,
+                      label: "Type",
+                      value: formData.business_type,
+                    },
+                    {
+                      icon: MapPin,
+                      label: "Location",
+                      value: formData.location,
+                    },
+                    {
+                      icon: Globe,
+                      label: "Website",
+                      value: formData.website,
+                      isLink: true,
+                    },
+                  ].map(
+                    (item, i) =>
+                      item.value && (
+                        <div
+                          key={i}
+                          className="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100"
                         >
-                          {formData.website}
-                        </a>
-                      </p>
-                    </div>
-                  )}
-                  {formData.priority_level && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Priority Level
-                      </label>
-                      <p className="mt-1">
-                        <span
-                          className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                            formData.priority_level === "critical"
-                              ? "bg-red-100 text-red-800"
-                              : formData.priority_level === "high"
-                              ? "bg-orange-100 text-orange-800"
-                              : formData.priority_level === "medium"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-green-100 text-green-800"
-                          }`}
-                        >
-                          {formData.priority_level.charAt(0).toUpperCase() +
-                            formData.priority_level.slice(1)}
-                        </span>
-                      </p>
-                    </div>
+                          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-[#432ad5] shadow-sm">
+                            <item.icon className="w-5 h-5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                              {item.label}
+                            </p>
+                            {item.isLink ? (
+                              <a
+                                href={item.value}
+                                target="_blank"
+                                className="text-sm font-bold text-[#432ad5] truncate block hover:underline"
+                              >
+                                {item.value}
+                              </a>
+                            ) : (
+                              <p className="text-sm font-bold text-slate-900 truncate">
+                                {item.value}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )
                   )}
                 </div>
               </div>
 
-              {/* Contact Information */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Contact Information
-                </h3>
-                <div className="space-y-4">
-                  {formData.contact_name && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Contact Name
-                      </label>
-                      <p className="text-gray-500 mt-1">
-                        {formData.contact_name}
-                      </p>
-                    </div>
-                  )}
-                  {formData.contact_email && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Contact Email
-                      </label>
-                      <p className="text-gray-500 mt-1">
-                        <a
-                          href={`mailto:${formData.contact_email}`}
-                          className="text-[#432ad5] hover:text-purple-700 hover:underline"
-                        >
-                          {formData.contact_email}
-                        </a>
-                      </p>
-                    </div>
-                  )}
-                  {formData.contact_phone && (
-                    <div>
-                      <label className="text-sm font-medium text-black">
-                        Contact Phone
-                      </label>
-                      <p className="text-gray-500 mt-1">
-                        {formData.contact_phone}
-                      </p>
-                    </div>
-                  )}
+              {/* Project Urgency */}
+              {formData.priority_level && (
+                <div
+                  className={`p-6 rounded-3xl border flex items-center justify-between ${
+                    formData.priority_level === "critical"
+                      ? "bg-red-50 border-red-100 text-red-700"
+                      : formData.priority_level === "high"
+                      ? "bg-orange-50 border-orange-100 text-orange-700"
+                      : "bg-[#432ad5]/5 border-[#432ad5]/10 text-[#432ad5]"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <AlertCircle className="w-5 h-5" />
+                    <span className="text-sm font-black uppercase tracking-tight">
+                      Project Priority: {formData.priority_level}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
-            {/* Right Column - Project Details */}
-            <div className="space-y-6">
-              {formData.requirements.length > 0 && (
-                <div>
-                  <label className="text-sm font-medium text-black mb-2 block">
-                    Requirements
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {formData.requirements.map((req) => (
-                      <span
-                        key={req}
-                        className="inline-block px-3 py-1 bg-[#432ad5] text-purple-50 rounded-full text-sm"
-                      >
-                        {req}
-                      </span>
-                    ))}
-                  </div>
+            {/* Right: Project Scope */}
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">
+                  Requirements
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {formData.requirements.map((req) => (
+                    <span
+                      key={req}
+                      className="px-4 py-2 bg-[#432ad5] text-white rounded-xl text-xs font-bold shadow-sm shadow-[#432ad5]/20"
+                    >
+                      {req}
+                    </span>
+                  ))}
                 </div>
-              )}
-
-              {formData.planned_pages.length > 0 && (
-                <div>
-                  <label className="text-sm font-medium text-black mb-2 block">
-                    Planned Pages
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {formData.planned_pages.map((page) => (
-                      <span
-                        key={page}
-                        className="inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm"
-                      >
-                        {page}
-                      </span>
-                    ))}
-                  </div>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">
+                  Planned Pages
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {formData.planned_pages.map((page) => (
+                    <span
+                      key={page}
+                      className="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold border border-slate-200"
+                    >
+                      {page}
+                    </span>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
-          {/* Description & Offering */}
-          <div className="space-y-6 border-t pt-6">
-            {formData.description && (
-              <div>
-                <label className="text-sm font-medium text-blackmb-2 block">
-                  Business Description
-                </label>
-                <p className="text-gray-500 leading-relaxed whitespace-pre-wrap">
-                  {formData.description}
+          {/* Deep Details */}
+          <div className="mt-12 pt-12 border-t border-slate-100 space-y-8">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
+                  The Mission
+                </h3>
+                <p className="text-slate-700 leading-relaxed bg-slate-50 p-6 rounded-[2rem] italic font-medium">
+                &quot;{formData.description}&quot;
                 </p>
               </div>
-            )}
-            {formData.offering && (
-              <div>
-                <label className="text-sm font-medium text-black mb-2 block">
-                  What We Offer
-                </label>
-                <p className="text-gray-500 leading-relaxed whitespace-pre-wrap">
+              <div className="space-y-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
+                  The Barter Offer
+                </h3>
+                <p className="text-[#432ad5] leading-relaxed bg-[#432ad5]/5 p-6 rounded-[2rem] font-bold border border-[#432ad5]/10">
                   {formData.offering}
                 </p>
               </div>
-            )}
-          </div>
-
-          {/* Visibility Status */}
-          <div className="mt-6 pt-6 border-t">
-            <label className="text-sm font-medium text-black mb-2 block">
-              Profile Visibility
-            </label>
-            <p className="text-gray-500">
-              {formData.is_listed
-                ? "✓ Public (Visible to developers)"
-                : "✗ Private (Hidden from developers)"}
-            </p>
+            </div>
           </div>
         </div>
 
         <button
           onClick={() => setIsEditing(true)}
-          className="mt-6 btn btn-primary px-6 py-3 rounded-lg font-medium transition-colors"
+          className="w-full btn-primary py-5 text-lg"
         >
-          Edit Profile
+          Edit Business Profile
         </button>
       </div>
     );
   }
 
+  // Edit Mode
   return (
-    <form onSubmit={handleSubmit} className="max-w-5xl mx-auto">
-      {message && (
-        <div
-          className={`mb-6 p-4 rounded-lg ${
-            message.type === "success"
-              ? "bg-green-50 text-green-800 border border-green-200"
-              : "bg-red-50 text-red-800 border border-red-200"
-          }`}
-        >
-          {message.text}
-        </div>
-      )}
-
-      <div className="bg-white rounded-xl border border-gray-200 p-8">
-        {/* Cover Photo */}
-        <div className="mb-8">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Cover Photo
-          </label>
-          {coverPhotoPreview && (
-            <div className="mb-4 rounded-xl overflow-hidden relative">
-              <Image
-                src={coverPhotoPreview}
-                alt="Cover preview"
-                className="w-full h-64 object-cover"
-                fill
-                priority
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  setCoverPhotoPreview(null);
-                  setCoverPhotoFile(null);
-                  setFormData({ ...formData, cover_photo: "" });
-                }}
-                className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
-              >
-                <X size={16} />
-              </button>
-            </div>
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleCoverPhotoChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          <p className="mt-1 text-sm text-gray-500">
-            Upload a cover photo for your business profile
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          {/* Left Column - Business Information */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Business Information
-            </h3>
-
-            <div>
-              <label
-                htmlFor="business_name"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Business Name *
-              </label>
-              <input
-                type="text"
-                id="business_name"
-                value={formData.business_name}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Your business name"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="business_type"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Business Type *
-              </label>
-              <input
-                type="text"
-                id="business_type"
-                value={formData.business_type}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="e.g., Technology, Healthcare, Finance"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="location"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Location *
-              </label>
-              <input
-                type="text"
-                id="location"
-                value={formData.location}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="e.g., New York, NY or Remote-First"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="website"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Website
-              </label>
-              <input
-                type="url"
-                id="website"
-                value={formData.website}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="https://yourcompany.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-black mb-2">
-                Priority Level *
-              </label>
-              <div className="space-y-2">
-                {["low", "medium", "high", "critical"].map((level) => (
-                  <label key={level} className="flex items-center">
-                    <input
-                      type="radio"
-                      name="priority_level"
-                      value={level}
-                      checked={formData.priority_level === level}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          priority_level: e.target.value as Exclude<
-                            BusinessProfile["priority_level"],
-                            null
-                          >,
-                        })
-                      }
-                    />
-                    <span className="ml-3 text-gray-500 capitalize">
-                      {level}
-                    </span>
-                  </label>
-                ))}
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500"
+    >
+      <div className="bg-white rounded-[2.5rem] border border-slate-100 p-10 shadow-xl shadow-slate-200/50">
+        {/* Visual Identity Section */}
+        <div className="mb-12">
+          <h3 className="text-xl font-black text-slate-900 tracking-tighter mb-6">
+            Visual Identity
+          </h3>
+          <div className="relative group">
+            {coverPhotoPreview ? (
+              <div className="relative h-64 w-full rounded-3xl overflow-hidden mb-4">
+                <Image
+                  src={coverPhotoPreview}
+                  alt="Preview"
+                  fill
+                  className="object-cover"
+                />
+                <button
+                  onClick={() => {
+                    setCoverPhotoPreview(null);
+                    setFormData({ ...formData, cover_photo: "" });
+                  }}
+                  className="absolute top-4 right-4 bg-red-500 text-white p-3 rounded-2xl shadow-xl hover:scale-110 transition-transform"
+                >
+                  <X size={20} />
+                </button>
               </div>
-            </div>
-          </div>
-
-          {/* Right Column - Contact Information */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-black">
-              Contact Information
-            </h3>
-
-            <div>
-              <label
-                htmlFor="contact_name"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Contact Name
-              </label>
-              <input
-                type="text"
-                id="contact_name"
-                value={formData.contact_name}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Primary contact person"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="contact_email"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Contact Email
-              </label>
-              <input
-                type="email"
-                id="contact_email"
-                value={formData.contact_email}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="contact@yourcompany.com"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="contact_phone"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Contact Phone
-              </label>
-              <input
-                type="tel"
-                id="contact_phone"
-                value={formData.contact_phone}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="(555) 123-4567"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-black mb-1"
-              >
-                Business Phone
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="(555) 123-4567"
-              />
-            </div>
+            ) : (
+              <div className="h-48 w-full rounded-3xl border-4 border-dashed border-slate-100 bg-slate-50 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors mb-4">
+                <Camera className="w-10 h-10 mb-2 opacity-20" />
+                <p className="text-sm font-bold">Upload Cover Photo</p>
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleCoverPhotoChange}
+              className="w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:text-sm file:font-bold file:bg-[#432ad5]/10 file:text-[#432ad5] hover:file:bg-[#432ad5]/20 cursor-pointer"
+            />
           </div>
         </div>
 
-        {/* Requirements */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-black mb-2">
-            Requirements
-          </label>
-          <div className="flex flex-wrap gap-2 mb-3">
-            {REQUIREMENT_OPTIONS.map((req) => (
-              <button
-                key={req}
-                type="button"
-                onClick={() => toggleRequirement(req)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                  formData.requirements.includes(req)
-                    ? "bg-[#432ad5] text-purple-50"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {req}
-              </button>
+        {/* Inputs Grid */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="space-y-6">
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              General Info
+            </h4>
+            {[
+              {
+                id: "business_name",
+                label: "Business Name",
+                placeholder: "The Bakery Co.",
+              },
+              {
+                id: "business_type",
+                label: "Type",
+                placeholder: "Retail, Service, etc.",
+              },
+              { id: "location", label: "Location", placeholder: "City, State" },
+              {
+                id: "website",
+                label: "Website URL",
+                placeholder: "https://...",
+              },
+            ].map((field) => (
+              <div key={field.id} className="space-y-2">
+                <label className="text-xs font-bold text-slate-500 ml-1">
+                  {field.label}
+                </label>
+                <input
+                  type="text"
+                  id={field.id}
+                  value={formData[field.id as keyof typeof formData] as string}
+                  onChange={handleChange}
+                  className="w-full text-gray-500 bg-slate-50 border-none rounded-2xl px-5 py-3 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+                  placeholder={field.placeholder}
+                  required={field.id !== "website"}
+                />
+              </div>
             ))}
           </div>
 
-          {/* Selected Requirements */}
-          {formData.requirements.length > 0 && (
-            <div className="mb-3">
-              <p className="text-sm text-gray-600 mb-2">Selected:</p>
-              <div className="flex flex-wrap gap-2">
-                {formData.requirements.map((req) => (
-                  <span
-                    key={req}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-purple-50 text-[#432ad5] rounded-full text-sm"
-                  >
-                    {req}
-                    <button
-                      type="button"
-                      onClick={() => removeRequirement(req)}
-                      className="hover:text-purple-900"
-                    >
-                      <X size={14} />
-                    </button>
+          <div className="space-y-6">
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              Urgency
+            </h4>
+            <div className="grid grid-cols-2 gap-3">
+              {["low", "medium", "high", "critical"].map((level) => (
+                <label
+                  key={level}
+                  className={`flex items-center justify-center p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                    formData.priority_level === level
+                      ? "bg-[#432ad5] border-[#432ad5] text-white shadow-lg"
+                      : "bg-white border-slate-100 text-slate-400 hover:border-slate-200"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="priority_level"
+                    value={level}
+                    checked={formData.priority_level === level}
+                    onChange={handleChange}
+                    className="hidden"
+                  />
+                  <span className="text-xs font-bold uppercase tracking-tighter">
+                    {level}
                   </span>
-                ))}
-              </div>
+                </label>
+              ))}
             </div>
-          )}
-
-          {/* Add Custom Requirement */}
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={customRequirement}
-              onChange={(e) => setCustomRequirement(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" &&
-                (e.preventDefault(), addCustomRequirement())
-              }
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Add custom requirement"
-            />
-            <button
-              type="button"
-              onClick={addCustomRequirement}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-            >
-              Add
-            </button>
           </div>
         </div>
 
-        {/* Planned Pages */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        {/* Dynamic Tag Selection */}
+        <div className="space-y-8 mb-12">
+          <div className="space-y-4">
+            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              Project Requirements
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {REQUIREMENT_OPTIONS.map((req) => (
+                <button
+                  key={req}
+                  type="button"
+                  onClick={() => toggleRequirement(req)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                    formData.requirements.includes(req)
+                      ? "bg-[#432ad5] text-white shadow-md"
+                      : "bg-slate-50 text-slate-500 hover:bg-slate-100"
+                  }`}
+                >
+                  {req}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Planned Pages Selection */}
+        <div className="space-y-4 mb-12">
+          <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">
             Planned Pages
           </label>
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="flex flex-wrap gap-2 mb-4">
             {PAGE_OPTIONS.map((page) => (
               <button
                 key={page}
                 type="button"
                 onClick={() => togglePage(page)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                   formData.planned_pages.includes(page)
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                    : "bg-slate-50 text-slate-500 hover:bg-slate-100"
                 }`}
               >
                 {page}
@@ -1215,136 +987,101 @@ export function BusinessProfileForm({
             ))}
           </div>
 
-          {/* Selected Pages */}
-          {formData.planned_pages.length > 0 && (
-            <div className="mb-3">
-              <p className="text-sm text-gray-600 mb-2">Selected:</p>
-              <div className="flex flex-wrap gap-2">
-                {formData.planned_pages.map((page) => (
-                  <span
-                    key={page}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm"
-                  >
-                    {page}
-                    <button
-                      type="button"
-                      onClick={() => removePage(page)}
-                      className="hover:text-blue-900"
-                    >
-                      <X size={14} />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Add Custom Page */}
+          {/* Custom Page Input */}
           <div className="flex gap-2">
             <input
               type="text"
               value={customPage}
               onChange={(e) => setCustomPage(e.target.value)}
-              onKeyPress={(e) =>
-                e.key === "Enter" && (e.preventDefault(), addCustomPage())
-              }
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Add custom page"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addCustomPage();
+                }
+              }}
+              className="flex-1 bg-slate-50 border-none rounded-2xl px-5 py-3 text-sm focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
+              placeholder="Add a custom page (e.g. Booking System)"
             />
             <button
               type="button"
               onClick={addCustomPage}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              className="px-6 py-3 bg-slate-100 text-slate-600 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-200 transition-all"
             >
               Add
             </button>
           </div>
         </div>
 
-        {/* Description */}
-        <div className="mb-6">
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-black mb-1"
-          >
-            Business Description *
-          </label>
-          <textarea
-            id="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={5}
-            className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            placeholder="Tell us about your business, your mission, and what you're looking for"
-            required
-          />
-        </div>
-
-        {/* Offering */}
-        <div className="mb-6">
-          <label
-            htmlFor="offering"
-            className="block text-sm font-medium text-black mb-1"
-          >
-            What We Offer *
-          </label>
-          <textarea
-            id="offering"
-            value={formData.offering}
-            onChange={handleChange}
-            rows={4}
-            className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            placeholder="Describe what services, products, or opportunities you offer"
-            required
-          />
+        {/* Description Area */}
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              The Mission
+            </label>
+            <textarea
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={5}
+              className="w-full text-gray-500 bg-slate-50 border-none rounded-3xl px-6 py-5 focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+              placeholder="Tell us your story..."
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              What you&apos;re giving in exchange
+            </label>
+            <textarea
+              id="offering"
+              value={formData.offering}
+              onChange={handleChange}
+              rows={4}
+              className="w-full bg-[#432ad5]/5 border-none rounded-3xl px-6 py-5 text-[#432ad5] font-bold focus:bg-white focus:ring-4 focus:ring-[#432ad5]/10 transition-all"
+              placeholder="e.g., Unlimited coffee for a year, Free landscaping..."
+              required
+            />
+          </div>
         </div>
 
         {/* Visibility Toggle */}
-        <div className="flex items-start mb-6">
-          <div className="flex items-center h-5">
-            <input
-              type="checkbox"
-              id="is_listed"
-              checked={formData.is_listed}
-              onChange={(e) =>
-                setFormData({ ...formData, is_listed: e.target.checked })
-              }
-              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-            />
-          </div>
-          <div className="ml-3">
-            <label
-              htmlFor="is_listed"
-              className="text-sm font-medium text-black"
-            >
-              Make my profile visible to developers
-            </label>
-            <p className="text-sm text-gray-500">
-              Allow developers to discover and contact you for opportunities
+        <div className="mt-10 p-8 bg-slate-50 rounded-[2rem] flex items-center justify-between text-white">
+          <div>
+            <p className="font-bold tracking-tight text-slate-500">
+              Ready for Developers?
+            </p>
+            <p className="text-xs text-slate-400">
+              Toggle visibility in the public business directory.
             </p>
           </div>
+          <input
+            type="checkbox"
+            checked={formData.is_listed}
+            onChange={(e) =>
+              setFormData({ ...formData, is_listed: e.target.checked })
+            }
+            className="w-8 h-8 rounded-xl bg-white/10 border-white/20 text-[#7864ff] focus:ring-[#7864ff]"
+          />
         </div>
+      </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-3 pt-6 border-t">
+      <div className="flex gap-4">
+        <button
+          type="submit"
+          disabled={isSaving}
+          className="flex-1 btn-primary py-5 shadow-2xl shadow-[#432ad5]/40"
+        >
+          {isSaving ? "Saving..." : "Publish Profile"}
+        </button>
+        {initialProfile && (
           <button
-            type="submit"
-            disabled={isSaving}
-            className="btn btn-primary text-white px-6 py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            type="button"
+            onClick={handleCancel}
+            className="px-10 py-5 bg-slate-100 text-slate-600 rounded-3xl font-black hover:bg-slate-200 transition-all uppercase text-xs tracking-widest"
           >
-            {isSaving ? "Saving..." : "Save Profile"}
+            Cancel
           </button>
-          {initialProfile && (
-            <button
-              type="button"
-              onClick={handleCancel}
-              disabled={isSaving}
-              className="bg-gray-200 text-gray-700 px-6 rounded-lg hover:bg-gray-300 disabled:opacity-50 transition-colors font-medium"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
+        )}
       </div>
     </form>
   );

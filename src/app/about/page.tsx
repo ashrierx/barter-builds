@@ -8,24 +8,24 @@ interface Step {
 }
 
 const steps: Step[] = [
-    {
-      icon: Users,
-      title: "Businesses Post Their Needs",
-      description:
-        "Small business owners describe their website requirements and what goods or services they can offer in exchange.",
-    },
-    {
-      icon: Globe,
-      title: "Developers Browse & Connect",
-      description:
-        "Skilled developers review business listings and reach out to those offering exchanges that interest them.",
-    },
-    {
-      icon: Handshake,
-      title: "Fair Trade Agreements",
-      description:
-        "Both parties agree on the scope of work and the goods/services to be exchanged, creating win-win partnerships.",
-    },
+  {
+    icon: Users,
+    title: "Businesses Post Their Needs",
+    description:
+      "Small business owners describe their website requirements and what goods or services they can offer in exchange.",
+  },
+  {
+    icon: Globe,
+    title: "Developers Browse & Connect",
+    description:
+      "Skilled developers review business listings and reach out to those offering exchanges that interest them.",
+  },
+  {
+    icon: Handshake,
+    title: "Fair Trade Agreements",
+    description:
+      "Both parties agree on the scope of work and the goods/services to be exchanged, creating win-win partnerships.",
+  },
 ];
 
 interface StepCardProps {
@@ -35,28 +35,25 @@ interface StepCardProps {
 }
 
 const StepCard: React.FC<StepCardProps> = ({ step, index, Icon }) => (
-    <div
-      className="relative z-10 w-full max-w-sm flex justify-center step-card-container animate-fade-in-up md:w-auto"
-      style={{ animationDelay: `${index * 0.3}s` }}
-    >
-      <div className="step-card w-full bg-white rounded-xl shadow-2xl p-6 border-t-4 border-barterPurple transition duration-300 ease-in-out hover:scale-[1.02] hover:shadow-3xl">
-        <div className="card-body items-center text-center">
-          {/* Icon Circle */}
-          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4 shadow-lg animate-pulse-subtle">
-            <Icon className="w-8 h-8" />
-          </div>
-          {/* Content */}
-          <h3 className="text-2xl font-bold mb-2 text-gray-800">
-            {step.title}
-          </h3>
-          <p className="text-gray-600">{step.description}</p>
+  <div
+    className="relative z-10 w-full max-w-sm flex justify-center step-card-container animate-fade-in-up md:w-auto"
+    style={{ animationDelay: `${index * 0.3}s` }}
+  >
+    <div className="step-card w-full bg-white rounded-xl shadow-2xl p-6 border-t-4 border-barterPurple transition duration-300 ease-in-out hover:scale-[1.02] hover:shadow-3xl">
+      <div className="card-body items-center text-center">
+        {/* Icon Circle */}
+        <div className="w-12 h-12 mb-6 text-[rgb(120,100,255)] drop-shadow-[0_0_15px_rgba(120,100,255,0.5)]">
+          <Icon className="w-full h-full" />
         </div>
+        {/* Content */}
+        <h3 className="text-2xl font-bold mb-2 text-gray-800">{step.title}</h3>
+        <p className="text-gray-600">{step.description}</p>
       </div>
     </div>
+  </div>
 );
 
 export default function About() {
-
   // All custom CSS is now embedded within the component
   const customStyles = `
     /* Custom Keyframes for Animations */
@@ -133,21 +130,41 @@ export default function About() {
   `;
 
   return (
-    <div className="font-inter bg-white pb-10">
+    <div className="bg-[#f8fafc] min-h-screen pb-20">
       {/* Embedded Styles */}
       <style>{customStyles}</style>
 
       {/* Hero Section */}
-      <div className="text-center mb-16 py-20 px-5 bg-barterPurple/90 text-white ">
-        <h1 className="text-4xl font-extrabold mb-6 leading-tight">
-          Building the Web, One Barter at a Time
+      {/* <div className="relative text-center py-32 px-5 bg-[#0a0a0a] overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[rgb(67,42,213)]/20 blur-[120px] rounded-full" />
+        <h1 className="relative text-5xl md:text-7xl font-black tracking-tighter text-white mb-6">
+          Building the Web, <br />
+          One <span className="text-[rgb(120,100,255)]">Barter</span> at a Time
         </h1>
-        <p className="text-xl max-w-3xl mx-auto italic font-medium text-white">
-          Barter Builds is a platform where creativity and commerce collide,
-          enabling small businesses and developers to trade skills for goods
-          and services, building a vibrant ecosystem of fair exchange.
-        </p>
-      </div>
+      </div> */}
+     <div className="bg-[#0a0a0a] text-white py-32 px-6 mb-12 relative overflow-hidden">
+  {/* Enhanced Glow - Added a second color for depth */}
+  <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+    <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#432ad5]/30 blur-[120px] rounded-full" />
+    <div className="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-[#7864ff]/10 blur-[100px] rounded-full" />
+  </div>
+
+  <div className="relative z-10 max-w-5xl mx-auto text-center">
+    {/* Eyebrow Tag */}
+    <span className="inline-block px-4 py-1 mb-6 text-xs font-bold tracking-[0.3em] uppercase bg-white/5 border border-white/10 rounded-full backdrop-blur-sm text-[#7864ff]">
+      The Future of Exchange
+    </span>
+
+    <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
+      Building the Web, <br />
+      <span className="bg-gradient-to-r from-[#7864ff] to-[#bca6ff] bg-clip-text text-transparent">
+        one barter at a time.
+      </span>
+    </h1>
+    
+    <div className="w-24 h-1 bg-[#432ad5] mx-auto rounded-full opacity-50" />
+  </div>
+</div>
 
       {/* Mission Statement */}
       {/* <div className="bg-gray-100 rounded-2xl p-10 mb-20 shadow-xl  transition duration-500 hover:shadow-2xl">
@@ -175,7 +192,7 @@ export default function About() {
           {/* Desktop Horizontal Flow Line (Runs across the center of the cards) */}
           {/* Line is drawn between the cards using margin offsets */}
           <div className="hidden md:block absolute left-0 right-0 top-1/2 transform -translate-y-1/2 h-0.5 bg-blue-300 z-0 mx-[calc(16.666%-1rem)]"></div>
-          
+
           <div className="relative flex flex-col items-center md:flex-row md:justify-between md:items-start">
             {steps.map((step, index) => {
               const Icon = step.icon;
@@ -186,7 +203,6 @@ export default function About() {
                   // Container for each step. On desktop, they are equal width and positioned for the flow.
                   className={`relative w-full md:w-1/3 flex flex-col items-center justify-start mb-16 md:mb-0 px-4`}
                 >
-                  
                   {/* Step Card (The Box) */}
                   <StepCard step={step} index={index} Icon={Icon} />
 
@@ -195,7 +211,6 @@ export default function About() {
 
                   {/* Vertical Spacer Dot (Mobile - Overlays the dashed line) */}
                   <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 translate-y-4 w-4 h-4 rounded-full bg-blue-500 md:hidden z-20 shadow-md"></div>
-                  
                 </div>
               );
             })}
@@ -277,9 +292,8 @@ export default function About() {
               <li className="flex items-start">
                 <span className="text-purple-500 mr-3 text-2xl">🎓</span>
                 <span>
-                  <b>Practice Entrepreneurial Skills</b>: Learn to manage
-                  client relationships, define project scope, and negotiate
-                  agreements.
+                  <b>Practice Entrepreneurial Skills</b>: Learn to manage client
+                  relationships, define project scope, and negotiate agreements.
                 </span>
               </li>
             </ul>

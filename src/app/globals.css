@@ -19,9 +19,9 @@
 }
 
 body {
-  background: #ffffff;
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0a0a0a;
+  color: #ededed;
+  font-family: var(--font-geist-sans), sans-serif;
   min-height: 100vh;
 }
 
@@ -34,14 +34,23 @@ details > summary::-webkit-details-marker {
 
 @layer components {
   .btn-primary {
-    background-color: rgb(67 42 213);
-    border-color: rgb(67 42 213);
-    color: #ffffff;
-    padding: .5rem;
+    @apply px-8 py-3 bg-[rgb(67,42,213)] text-white font-medium rounded-full 
+           transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(67,42,213,0.4)] 
+           active:scale-95;
   }
-  
-  .btn-primary:hover {
-    background-color: rgb(57 32 203);
-    border-color: rgb(57 32 203);
+
+  .btn-outline {
+    @apply px-8 py-3 border-2 border-white/20 text-white font-medium rounded-full 
+           backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black;
+  }
+
+  .glass-nav {
+    @apply bg-white/70 dark:bg-black/60 backdrop-blur-md border-b border-white/10 sticky top-0 z-50;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply transition-all duration-200 border-slate-200 focus:border-[#432ad5] focus:ring-4 focus:ring-[#432ad5]/10 outline-none;
   }
 }

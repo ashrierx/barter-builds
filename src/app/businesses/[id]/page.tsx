@@ -147,11 +147,14 @@ export default function BusinessDetailPage() {
                 <h2 className="font-semibold mb-3 text-black">
                   Required Features:
                 </h2>
-                <div className="text-gray-700">
+                <div className="flex flex-wrap gap-2">
                   {business.requirements.map((req, i) => (
-                    <ul key={i} className="px-3 py-1 text-sm list-disc">
-                      <li>{req}</li>
-                    </ul>
+                    <span
+                      key={i}
+                      className="px-4 py-1 bg-[rgb(67,42,213)]/5 text-[rgb(67,42,213)] border border-[rgb(67,42,213)]/10 rounded-full text-sm font-medium"
+                    >
+                      {req}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -177,12 +180,12 @@ export default function BusinessDetailPage() {
         </div>
 
         {/* RIGHT SIDEBAR */}
-        <div className="space-y-6">
+        <div className="space-y-6 bg-slate-50">
           {/* Contact Card */}
           {(business.contact_name ||
             business.contact_email ||
             business.contact_phone) && (
-            <div className="bg-white rounded-2xl border p-6">
+            <div className="p-6">
               <h3 className="font-semibold mb-4 text-black">Business Owner</h3>
 
               {business.contact_name && (
@@ -239,8 +242,8 @@ export default function BusinessDetailPage() {
           )}
 
           {/* CTA */}
-          <div className="bg-white rounded-2xl border p-6">
-            <button className="w-full bg-black text-white py-3 rounded-xl font-medium">
+          <div className=" p-6">
+            <button className="w-full rounded-full bg-black text-white py-3 font-medium">
               Contact Business
             </button>
             {/* <button className="w-full mt-3 border py-3 rounded-xl text-sm">

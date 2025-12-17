@@ -28,124 +28,145 @@ export default function Contact() {
   };
 
   return (
-    <div className="bg-gray-50 pb-10">
-      <div className="text-center mb-12 p-6">
-        <h1 className="text-5xl mb-6 text-black">Contact Us</h1>
-        <p className="text-xl text-muted-foreground text-gray-500 max-w-3xl mx-auto">
-          Have questions about Barter Builds? Need help with your application?
-          We are here to help you navigate the world of skill-based trading.
-        </p>
+    <div className="bg-[#f8fafc] min-h-screen pb-20">
+      {/* Hero Header */}
+      <div className="bg-[#0a0a0a] text-white py-32 px-6 mb-12 relative overflow-hidden">
+        {/* Multi-layered Glow */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#432ad5]/30 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-[#7864ff]/10 blur-[100px] rounded-full" />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto text-center">
+          <span className="inline-block px-4 py-1 mb-6 text-xs font-bold tracking-[0.3em] uppercase bg-white/5 border border-white/10 rounded-full backdrop-blur-sm text-[#7864ff]">
+            Get in Touch
+          </span>
+
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
+            Let&apos;s talk <br />
+            <span className="bg-gradient-to-r from-[#7864ff] to-[#bca6ff] bg-clip-text text-transparent">
+              Barter.
+            </span>
+          </h1>
+
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+            Have questions about the platform? We&apos;re here to help you navigate
+            the world of skill-based trading.
+          </p>
+        </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8 px-12">
-        {/* Contact Information */}
-        <div className="space-y-6">
-          <div className="border rounded-lg p-6 bg-white">
-            <h2 className="font-semibold mb-4 text-black">Get in Touch</h2>
-            <div className="space-y-4 text-sm">
-              <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-gray-700 mt-0.5" />
-                <div>
-                  <p className="font-medium text-black">Email</p>
-                  <p className="text-muted-foreground text-gray-700">
-                    hello@barterbuilds.com
-                  </p>
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-12">
+        {/* Left Column: Info & FAQ */}
+        <div className="lg:col-span-4 space-y-8">
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+            <h2 className="text-xl font-bold text-slate-900 mb-6">
+              Contact Info
+            </h2>
+            <div className="space-y-6">
+              {[
+                { Icon: Mail, label: "Email", value: "hello@barterbuilds.com" },
+                { Icon: Phone, label: "Phone", value: "(555) 123-4567" },
+                {
+                  Icon: MapPin,
+                  label: "Office",
+                  value: "123 Innovation Blvd, CA",
+                },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#432ad5]">
+                    <item.Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                      {item.label}
+                    </p>
+                    <p className="text-slate-900 font-medium">{item.value}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-gray-700 mt-0.5" />
-                <div>
-                  <p className="font-medium text-black">Phone</p>
-                  <p className="text-muted-foreground text-gray-700">
-                    (555) 123-4567
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-gray-700 mt-0.5" />
-                <div>
-                  <p className="font-medium text-black">Address</p>
-                  <p className="text-muted-foreground text-gray-700">
-                    123 Innovation Blvd
-                    <br />
-                    Tech City, CA 94016
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-gray-700 mt-0.5" />
-                <div>
-                  <p className="font-medium text-black">Business Hours</p>
-                  <p className="text-muted-foreground text-gray-700">
-                    Mon-Fri: 9:00 AM - 6:00 PM PST
-                    <br />
-                    Sat-Sun: 10:00 AM - 4:00 PM PST
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          <div className="border rounded-lg p-6 bg-white">
-            <h2 className="font-semibold mb-4 text-black">Frequently Asked</h2>
-            <div className="space-y-4 text-sm">
-              <div>
-                <p className="font-medium text-black">
-                  How long does approval take?
+          <div className="bg-[#432ad5]/5 p-8 rounded-3xl border border-[#432ad5]/10">
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Quick FAQ</h2>
+            <div className="space-y-4">
+              <details className="group cursor-pointer">
+                <summary className="font-semibold text-slate-800 list-none flex justify-between items-center">
+                  Is it really free?
+                  <span className="transition-transform group-open:rotate-180">
+                    ↓
+                  </span>
+                </summary>
+                <p className="text-sm text-slate-600 mt-2">
+                  Absolutely. No hidden fees or commissions on trades.
                 </p>
-                <p className="text-muted-foreground text-gray-700">
+              </details>
+              <details className="group cursor-pointer">
+                <summary className="font-semibold text-slate-800 list-none flex justify-between items-center">
+                  How long does approval take?
+                  <span className="transition-transform group-open:rotate-180">
+                    ↓
+                  </span>
+                </summary>
+                <p className="text-sm text-slate-600 mt-2">
                   Usually 2-3 business days for both businesses and developers.
                 </p>
-              </div>
-              <div>
-                <p className="font-medium text-black">
-                  Is there a fee to join?
-                </p>
-                <p className="text-muted-foreground text-gray-700">
-                  No, Barter Builds is completely free to use.
-                </p>
-              </div>
-              <div>
-                <p className="font-medium text-black">
+              </details>
+              <details className="group cursor-pointer">
+                <summary className="font-semibold text-slate-800 list-none flex justify-between items-center">
                   What if a deal goes wrong?
-                </p>
-                <p className="text-muted-foreground text-gray-700">
+                  <span className="transition-transform group-open:rotate-180">
+                    ↓
+                  </span>
+                </summary>
+                <p className="text-sm text-slate-600 mt-2">
                   We provide mediation services to help resolve any disputes.
                 </p>
-              </div>
+              </details>
+              <details className="group cursor-pointer">
+                <summary className="font-semibold text-slate-800 list-none flex justify-between items-center">
+                  How do I get started with a helping a business?
+                  <span className="transition-transform group-open:rotate-180">
+                    ↓
+                  </span>
+                </summary>
+                <p className="text-sm text-slate-600 mt-2">
+                  Check out their profile page to understand their needs. If it
+                  is something you are interested in helping with, click the
+                  contact button to email them.
+                </p>
+              </details>
+              <div className="h-px bg-slate-200" />
+              {/* Add more details tags as needed */}
             </div>
           </div>
         </div>
 
-        {/* Contact Form */}
-        <div className="lg:col-span-2 border rounded-lg p-6 bg-white text-black">
-          <h2 className="font-semibold text-black">Send us a Message</h2>
-          <p className="text-sm text-muted-foreground mb-6">
-            Fill out the form below and we will get back to you as soon as
-            possible.
-          </p>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="contactName" className="block text-sm mb-1">
-                  Name *
+        {/* Right Column: The Form */}
+        <div className="lg:col-span-8 bg-white p-10 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700 ml-1">
+                  Full Name
                 </label>
                 <input
-                  className="w-full border rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                  id="contactName"
+                  className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-slate-900 placeholder:text-slate-400 focus:bg-white"
+                  placeholder="John Doe"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   required
                 />
               </div>
-              <div>
-                <label htmlFor="contactEmail" className="block text-sm mb-1">
-                  Email *
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700 ml-1">
+                  Email Address
                 </label>
                 <input
-                  id="contactEmail"
-                  className="w-full border rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                   type="email"
+                  className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-slate-900 placeholder:text-slate-400 focus:bg-white"
+                  placeholder="john@example.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   required
@@ -153,59 +174,44 @@ export default function Contact() {
               </div>
             </div>
 
-            <div>
-              <label htmlFor="category" className="block text-sm mb-1">
-                Category
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">
+                Inquiry Category
               </label>
               <select
-                id="category"
-                className="w-full border rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-slate-900 focus:bg-white appearance-none"
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
               >
-                <option value="">What is this regarding?</option>
+                <option value="">Select a topic...</option>
                 <option value="general">General Question</option>
+                <option value="technical">Technical Issue</option>
                 <option value="business-help">Business Application Help</option>
                 <option value="developer-help">
                   Developer Application Help
                 </option>
-                <option value="technical">Technical Issue</option>
                 <option value="dispute">Dispute Resolution</option>
-                <option value="partnership">Partnership Inquiry</option>
-                <option value="press">Press/Media</option>
               </select>
             </div>
 
-            <div>
-              <label htmlFor="subject" className="block text-sm mb-1">
-                Subject *
-              </label>
-              <input
-                className="w-full border rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                id="subject"
-                placeholder="Brief description of your inquiry"
-                value={form.subject}
-                onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="message" className="block text-sm mb-1">
-                Message *
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">
+                Message
               </label>
               <textarea
-                id="message"
-                className="w-full border rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                placeholder="Please provide details about your question or concern..."
-                rows={6}
+                className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-slate-900 placeholder:text-slate-400 focus:bg-white"
+                placeholder="How can we help you?"
+                rows={5}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 required
               />
             </div>
 
-            <button type="submit" className="btn btn-primary w-full">
+            <button
+              type="submit"
+              className="w-full bg-[#432ad5] text-white py-5 rounded-2xl font-bold text-lg hover:bg-[#3920cb] hover:shadow-lg hover:shadow-[#432ad5]/30 transition-all active:scale-[0.98]"
+            >
               Send Message
             </button>
           </form>
