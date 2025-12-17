@@ -952,9 +952,9 @@ export function BusinessProfileForm({
                   key={req}
                   type="button"
                   onClick={() => toggleRequirement(req)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  className={`px-4 py-2 rounded-xl text-xs shadow-sm font-bold transition-all ${
                     formData.requirements.includes(req)
-                      ? "bg-[#432ad5] text-white shadow-md"
+                      ? "bg-[#432ad5] text-white "
                       : "bg-slate-50 text-slate-500 hover:bg-slate-100"
                   }`}
                 >
@@ -978,7 +978,7 @@ export function BusinessProfileForm({
                 onClick={() => togglePage(page)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                   formData.planned_pages.includes(page)
-                    ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                    ? "bg-blue-600 text-white shadow-sm shadow-blue-200"
                     : "bg-slate-50 text-slate-500 hover:bg-slate-100"
                 }`}
               >
@@ -999,7 +999,7 @@ export function BusinessProfileForm({
                   addCustomPage();
                 }
               }}
-              className="flex-1 bg-slate-50 border-none rounded-2xl px-5 py-3 text-sm focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
+              className="flex-1 text-slate-500 bg-slate-50 border-none rounded-2xl px-5 py-3 text-sm focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
               placeholder="Add a custom page (e.g. Booking System)"
             />
             <button
